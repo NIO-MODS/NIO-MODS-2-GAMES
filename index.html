@@ -312,7 +312,16 @@
             { title: "Car Simulator", cat: "Games", size: "716.02MB", ver: "v1.60.2", dev: "Safefileku Mod", img: "https://i.imgur.com/QSROgs6.jpeg", link: "https://www.mediafire.com/file/vlyzmzkoxyonyul/Car+Simulator+Mod+Apk+V1.60.2+(Safefileku).zip/file", info: "Realistic driving simulation with unlimited resources." },
             { title: "Stumble Guys", cat: "Games", size: "235MB", ver: "v0.93.5", dev: "Premium Mod Menu", img: "https://i.imgur.com/sy4SAX4.jpeg", link: "https://www.mediafire.com/file/n49j9mcenc4m2ou/Mod_Menu_Stumble_Guys_v0.93.5_p150_-.apk/file?dkey=enmcdgqn9so&r=381", info: "Advanced Mod Menu with skins, emotes, and bypass features." },
             { title: "CapCut Pro", cat: "Edit", size: "285.66MB", ver: "v15.8.0", dev: "Pro Unlocked", img: "https://i.imgur.com/o6C6OUz.jpeg", link: "https://www.mediafire.com/file/wdqkq0x8ioge2k6/CapCut_v15.8.0_%28Pro%29_fix.apk/file", info: "Ultimate video editor with all premium filters and effects unlocked." },
-            { title: "Wink VIP", cat: "Edit", size: "94.19MB", ver: "v2.22.5", dev: "VIP Unlocked", img: "https://i.imgur.com/8kwLpNE.jpeg", link: "https://www.mediafire.com/file/oodzjdtjq6nn0j8/wink_vip_e.apk/file", info: "Professional retouching tool. VIP features unlocked including AI face tools." },
+            { 
+                title: "Wink VIP", 
+                cat: "Edit", 
+                size: "Varies", 
+                ver: "v2.22.5", 
+                dev: "NIO-MODS", 
+                img: "https://i.imgur.com/8kwLpNE.jpeg", 
+                link: "https://www.mediafire.com/file/t98mwy191y8bc07/WINK-NIO-MODS.apk/file", 
+                info: "Professional retouching tool. VIP features unlocked including AI face tools and high-definition export." 
+            },
             { title: "DramaBox", cat: "Watch", size: "82.59MB", ver: "Latest", dev: "VIP Unlocked", img: "https://i.imgur.com/fm9I4HW.jpeg", link: "https://www.mediafire.com/file/my7iw9nm6n3hhyb/DramaBox_%28SFILE.MOBI%29.apk/file", info: "Trending short dramas and series. VIP access unlocked." },
             { 
                 title: "Delta Executor", 
@@ -478,7 +487,6 @@
             const timer = setInterval(() => {
                 val += 2;
                 
-                // Dynamic Status Text
                 if (val < 30) statusText.innerText = 'Verifying...';
                 else if (val < 70) statusText.innerText = 'Downloading...';
                 else if (val < 95) statusText.innerText = 'Finalizing...';
@@ -487,11 +495,8 @@
                 if (val >= 100) {
                     val = 100;
                     clearInterval(timer);
-                    
-                    // Trigger Download
                     window.location.href = finalLink;
                     
-                    // Reset UI after delay
                     setTimeout(() => {
                         if(item.isMultiPlatform) document.getElementById('install-section-multi').classList.remove('hidden');
                         else document.getElementById('install-section-single').classList.remove('hidden');
