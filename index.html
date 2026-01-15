@@ -32,12 +32,79 @@
             z-index: -1;
         }
 
+        /* Fixed Premium APK Card */
+        .mod-card {
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 2.5rem;
+            height: 340px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 1.75rem;
+            position: relative;
+            overflow: hidden; /* Clips the inner fade to the border radius */
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: pointer;
+        }
+
+        /* Seamless Fade Overlay */
+        .card-fade {
+            position: absolute;
+            /* Using inset -1px to ensure the fade slightly overlaps the border, removing gaps */
+            inset: -1px; 
+            width: calc(100% + 2px);
+            height: calc(100% + 2px);
+            background: linear-gradient(to top, 
+                rgba(2, 6, 23, 1) 0%, 
+                rgba(2, 6, 23, 0.98) 25%, 
+                rgba(2, 6, 23, 0.6) 60%, 
+                rgba(2, 6, 23, 0.2) 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .mod-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--neon-blue);
+            box-shadow: 0 25px 50px -12px rgba(0, 210, 255, 0.3);
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Banner Tab - Reduced by 3px */
+        .banner-tab {
+            padding: 1px 9px !important;
+            border-radius: 6px;
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+            width: fit-content;
+        }
+
+        .category-tab.active {
+            background: #fff;
+            color: #000;
+            box-shadow: 0 10px 25px rgba(255,255,255,0.2);
+        }
+
+        .hidden { display: none; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        
+        /* Slider & Animations */
         .slider-container {
             position: relative;
             width: 100%;
             height: 100%;
             display: flex;
-            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         .slide {
@@ -55,7 +122,7 @@
             object-fit: cover;
             filter: brightness(0.4);
             transform: scale(1.1);
-            transition: transform 6s linear;
+            transition: transform 8s linear;
         }
 
         .slide.active .slide-img { transform: scale(1); }
@@ -73,94 +140,35 @@
             transition: all 0.8s ease 0.3s;
         }
 
-        .slide.active .slide-content {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.2);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .dot.active {
-            width: 30px;
-            border-radius: 10px;
-            background: var(--neon-blue);
-        }
+        .slide.active .slide-content { opacity: 1; transform: translateY(0); }
 
         @keyframes pop { 0% { transform: scale(0.96); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-        .animate-pop { animation: pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+        .animate-pop { animation: pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
 
         @keyframes slideUpFade {
-            0% { transform: translateY(100px); opacity: 0; }
+            0% { transform: translateY(50px); opacity: 0; }
             100% { transform: translateY(0); opacity: 1; }
         }
-        .animate-slide-up { animation: slideUpFade 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
+        .animate-slide-up { animation: slideUpFade 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
 
-        .mod-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            backdrop-filter: blur(10px);
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-        .mod-card:hover {
-            background: rgba(255, 255, 255, 0.07);
-            border-color: var(--neon-blue);
-            transform: translateY(-4px);
+        .horizontal-list-wrapper {
+            display: flex;
+            gap: 1.25rem;
+            overflow-x: auto;
+            padding: 10px 0 20px 0;
+            scroll-snap-type: x mandatory;
         }
 
-        .category-tab.active {
-            background: #fff;
-            color: #000;
-            box-shadow: 0 10px 25px rgba(255,255,255,0.2);
-        }
-
-        .explanation-tab {
-            max-height: 0;
-            overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 0;
-        }
-        .explanation-tab.show {
-            max-height: 200px;
-            opacity: 1;
-            margin-top: 1rem;
-            padding: 1rem;
-            background: rgba(188, 19, 254, 0.05);
-            border-radius: 1rem;
-            border: 1px solid rgba(188, 19, 254, 0.2);
-        }
-
-        .hidden { display: none; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        
-        .progress-fill {
-            height: 100%;
-            background: #00d2ff;
-            width: 0%;
-            transition: width 0.1s linear;
-        }
-
-        .spinner {
-            width: 24px;
-            height: 24px;
-            border: 3px solid rgba(255,255,255,0.1);
-            border-top: 3px solid #00d2ff;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        .similar-card {
-            min-width: 140px;
-            transition: transform 0.3s ease;
-        }
-        .similar-card:active {
-            transform: scale(0.95);
+        .apk-list-card {
+            flex: 0 0 280px;
+            scroll-snap-align: start;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 32px;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
         }
     </style>
 </head>
@@ -177,7 +185,7 @@
         </div>
 
         <div class="relative group max-w-md w-full ml-4">
-            <input type="text" id="searchBox" placeholder="Search premium mods..." 
+            <input type="text" id="searchBox" placeholder="Search mods..." 
                 class="w-full bg-white/5 border border-white/10 rounded-2xl py-2.5 px-5 pl-11 focus:outline-none transition-all duration-300 text-sm">
             <svg class="w-4 h-4 absolute left-4 top-3 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -185,63 +193,51 @@
         </div>
     </nav>
 
-    <!-- Pre-Store Loading Overlay -->
-    <div id="pre-loader" class="hidden fixed inset-0 z-[70] bg-black/80 backdrop-blur-md flex flex-col items-center justify-center">
-        <div class="spinner mb-6"></div>
-        <p class="text-[10px] font-black tracking-[0.3em] uppercase opacity-60 mb-4" id="pre-loader-text">Checking Security...</p>
-        <div class="w-48 h-1 bg-white/5 rounded-full overflow-hidden">
-            <div id="pre-loader-bar" class="h-full bg-blue-500 w-0 transition-all duration-300"></div>
-        </div>
-    </div>
-
-    <!-- Main Listing View -->
     <main id="main-view" class="max-w-7xl mx-auto px-6 pt-12 pb-32">
-        <!-- Hero Slider -->
-        <section class="relative mb-20 animate-pop h-[400px] md:h-[500px] rounded-[2.5rem] overflow-hidden border border-white/10 shadow-2xl group">
+        <!-- Featured Slider -->
+        <section class="relative mb-16 animate-pop h-[400px] md:h-[500px] rounded-[2.5rem] overflow-hidden border border-white/10 shadow-2xl group">
             <div id="slider" class="slider-container">
-                 <div class="slide active">
-                    <img src="https://i.imgur.com/A7j4tXZ.jpeg" class="slide-img" alt="Netflix">
+                <div class="slide active">
+                    <img src="https://play-lh.googleusercontent.com/7G_QBBufLp71rnqfwEGF9XnF33H5wx-mD9wxpKAJvVXxcc7YCgsT4yxpT7GF7sGprf8=w240-h480-rw" class="slide-img" alt="Tower War">
                     <div class="slide-content">
-                        <span class="bg-red-600 w-fit px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-[0.2em] mb-4">PREMIUM UNLOCKED</span>
-                        <h2 class="text-4xl md:text-6xl font-black mb-4 leading-[0.9] tracking-tighter uppercase">NETFLIX <br><span class="text-red-500">v9.48.0</span></h2>
-                        <p class="text-white/60 text-sm mb-8 max-w-sm">Watch unlimited movies and TV shows. Ad-free experience with premium features enabled.</p>
-                        <button onclick="handleViewClick(12)" class="w-fit bg-white text-black px-10 py-4 rounded-xl font-black text-sm tracking-widest hover:bg-red-600 hover:text-white transition-all transform active:scale-95">WATCH NOW</button>
+                        <span class="banner-tab bg-red-600">TACTICAL STRATEGY</span>
+                        <h2 class="text-4xl md:text-6xl font-black mb-4 leading-[0.9] tracking-tighter uppercase">TOWER WAR <br><span class="text-red-400">Tactical Conquest</span></h2>
+                        <button onclick="handleViewClick(11)" class="w-fit bg-white text-black px-10 py-4 rounded-xl font-black text-sm tracking-widest hover:bg-red-600 hover:text-white transition-all transform active:scale-95 uppercase">Get Mod</button>
                     </div>
                 </div>
                 <div class="slide">
-                    <img src="https://i.imgur.com/q9EVrKH.jpeg" class="slide-img" alt="MCPE">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdxA0EMLltuoBhKV_osRZJDN4CghdiUNNYjXWyIAPoTF4T7n3jxirudHc&s=10" class="slide-img" alt="Spotify">
                     <div class="slide-content">
-                        <span class="bg-orange-600 w-fit px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-[0.2em] mb-4">LATEST VERSION</span>
-                        <h2 class="text-4xl md:text-6xl font-black mb-4 leading-[0.9] tracking-tighter uppercase">MINECRAFT <br><span class="text-orange-400">PE 1.21.131</span></h2>
-                        <p class="text-white/60 text-sm mb-8 max-w-sm">Build, explore and survive. Patched version with multiple architecture support.</p>
-                        <button onclick="handleViewClick(11)" class="w-fit bg-white text-black px-10 py-4 rounded-xl font-black text-sm tracking-widest hover:bg-orange-500 hover:text-white transition-all transform active:scale-95">DOWNLOAD APK</button>
+                        <span class="banner-tab bg-green-600">PREMIUM UNLOCKED</span>
+                        <h2 class="text-4xl md:text-6xl font-black mb-4 leading-[0.9] tracking-tighter uppercase">SPOTIFY <br><span class="text-green-400">Music Mod</span></h2>
+                        <button onclick="handleViewClick(10)" class="w-fit bg-white text-black px-10 py-4 rounded-xl font-black text-sm tracking-widest hover:bg-green-600 hover:text-white transition-all transform active:scale-95 uppercase">Get Now</button>
                     </div>
                 </div>
             </div>
-
-            <div id="dot-container" class="absolute bottom-8 left-0 right-0 z-20 flex justify-center gap-3"></div>
-
-            <button onclick="prevSlide()" class="absolute left-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-black/40 border border-white/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-            <button onclick="nextSlide()" class="absolute right-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-black/40 border border-white/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
         </section>
 
-        <!-- Categories -->
-        <div class="flex items-center gap-3 mb-12 overflow-x-auto pb-4 no-scrollbar">
-            <button onclick="filterMods('All', this)" class="category-tab active px-8 py-3.5 rounded-xl font-black text-[11px] uppercase tracking-[0.15em] whitespace-nowrap">All</button>
-            <button onclick="filterMods('Games', this)" class="category-tab bg-white/5 px-8 py-3.5 rounded-xl font-black text-[11px] uppercase tracking-[0.15em] whitespace-nowrap hover:bg-white/10">Games</button>
-            <button onclick="filterMods('Edit', this)" class="category-tab bg-white/5 px-8 py-3.5 rounded-xl font-black text-[11px] uppercase tracking-[0.15em] whitespace-nowrap hover:bg-white/10">Edit</button>
-            <button onclick="filterMods('Music', this)" class="category-tab bg-white/5 px-8 py-3.5 rounded-xl font-black text-[11px] uppercase tracking-[0.15em] whitespace-nowrap hover:bg-white/10">Music</button>
-            <button onclick="filterMods('Watch', this)" class="category-tab bg-white/5 px-8 py-3.5 rounded-xl font-black text-[11px] uppercase tracking-[0.15em] whitespace-nowrap hover:bg-white/10">Watch</button>
+        <!-- Filters -->
+        <div class="flex flex-col gap-6 mb-12">
+            <button id="sortToggle" onclick="toggleSort()" class="w-fit flex items-center gap-3 bg-white/5 border border-white/10 px-6 py-3 rounded-2xl hover:bg-white/10 transition-all group">
+                <span id="sortLabel" class="text-[10px] font-black uppercase tracking-[0.2em] text-blue-400">Sort: Latest</span>
+                <div class="w-px h-4 bg-white/10"></div>
+                <svg class="w-4 h-4 text-white/40 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path>
+                </svg>
+            </button>
+
+            <div class="flex items-center gap-3 overflow-x-auto pb-2 no-scrollbar">
+                <button onclick="filterMods('All', this)" class="category-tab active px-8 py-3.5 rounded-xl font-black text-[11px] uppercase tracking-[0.15em] whitespace-nowrap">All</button>
+                <button onclick="filterMods('Games', this)" class="category-tab bg-white/5 px-8 py-3.5 rounded-xl font-black text-[11px] uppercase tracking-[0.15em] whitespace-nowrap hover:bg-white/10">Games</button>
+                <button onclick="filterMods('Entertainment', this)" class="category-tab bg-white/5 px-8 py-3.5 rounded-xl font-black text-[11px] uppercase tracking-[0.15em] whitespace-nowrap hover:bg-white/10">Entertainment</button>
+                <button onclick="filterMods('Edit', this)" class="category-tab bg-white/5 px-8 py-3.5 rounded-xl font-black text-[11px] uppercase tracking-[0.15em] whitespace-nowrap hover:bg-white/10">Edit</button>
+            </div>
         </div>
 
         <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
     </main>
 
-    <!-- Detailed Store View -->
+    <!-- Store View Overlay -->
     <div id="store-view" class="hidden fixed inset-0 z-50 bg-[#020617] overflow-y-auto pt-24 pb-20">
         <div id="store-content" class="max-w-4xl mx-auto px-6 opacity-0">
             <button onclick="goHome()" class="flex items-center gap-2 text-white/50 hover:text-white mb-10 group">
@@ -249,221 +245,164 @@
                 <span class="font-bold text-xs tracking-widest uppercase">Library</span>
             </button>
 
-            <div class="flex flex-col md:flex-row gap-8 items-start mb-16">
-                <img id="store-app-icon" src="" class="w-32 h-32 md:w-44 md:h-44 rounded-[2.5rem] shadow-2xl object-cover border border-white/10">
-                <div class="flex-grow">
-                    <h1 id="store-app-title" class="text-4xl md:text-5xl font-black tracking-tighter mb-1 uppercase"></h1>
-                    <p id="store-app-dev" class="text-blue-500 font-bold tracking-widest text-[10px] uppercase mb-6"></p>
+            <div class="bg-white/[0.02] border border-white/5 rounded-[3rem] p-8 md:p-12 mb-8">
+                <div class="flex flex-col md:flex-row gap-10 items-start mb-12">
+                    <img id="store-app-icon" class="w-32 h-32 md:w-44 md:h-44 rounded-[2.5rem] shadow-2xl object-cover border border-white/10">
                     
-                    <div class="flex flex-wrap gap-6 mb-8">
-                        <div class="text-center">
-                            <p id="store-app-size" class="text-lg font-black"></p>
-                            <p class="text-[9px] opacity-40 font-bold uppercase tracking-widest">Storage</p>
+                    <div class="flex-grow w-full">
+                        <h1 id="store-app-title" class="text-4xl md:text-6xl font-black tracking-tighter mb-1 uppercase"></h1>
+                        <p id="store-app-dev" class="text-blue-500 font-bold tracking-widest text-[10px] uppercase mb-8"></p>
+                        
+                        <div class="flex flex-wrap gap-8 mb-10">
+                            <div><p id="store-app-size" class="text-xl font-black"></p><p class="text-[9px] opacity-40 font-bold uppercase tracking-widest">Size</p></div>
+                            <div class="hidden md:block w-px h-10 bg-white/10"></div>
+                            <div><p id="store-app-ver" class="text-xl font-black"></p><p class="text-[9px] opacity-40 font-bold uppercase tracking-widest">Version</p></div>
                         </div>
-                        <div class="w-px h-8 bg-white/10 mt-1"></div>
-                        <div class="text-center">
-                            <p class="text-lg font-black text-blue-500">Premium</p>
-                            <p class="text-[9px] opacity-40 font-bold uppercase tracking-widest">Type</p>
-                        </div>
-                    </div>
 
-                    <!-- SINGLE DOWNLOAD -->
-                    <div id="install-section-single" class="w-full md:w-64">
-                        <button id="install-btn" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-3.5 rounded-xl font-black text-xs tracking-[0.2em] transition-all active:scale-95 shadow-xl shadow-blue-500/20 uppercase">Install</button>
-                    </div>
-
-                    <!-- MULTI DOWNLOAD -->
-                    <div id="install-section-multi" class="hidden w-full flex flex-col gap-4 max-w-sm"></div>
-
-                    <!-- PROGRESS BAR -->
-                    <div id="progress-container" class="hidden w-full md:w-64 mt-4">
-                        <div class="flex justify-between text-[10px] font-bold uppercase tracking-widest mb-1 opacity-60">
-                            <span id="progress-status">Initializing...</span>
-                            <span id="progress-percent">0%</span>
-                        </div>
-                        <div class="h-1 bg-white/10 rounded-full overflow-hidden">
-                            <div id="progress-fill" class="progress-fill"></div>
+                        <div class="flex flex-row gap-3 w-full">
+                            <button id="install-btn" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-2xl font-black text-[10px] md:text-xs tracking-[0.2em] transition-all uppercase shadow-xl shadow-blue-500/20 truncate">Install APK</button>
+                            <button onclick="toggleExplanation()" class="flex-1 bg-[#bc13fe] hover:bg-[#a011d8] text-white py-4 rounded-2xl font-black text-[10px] md:text-xs tracking-[0.2em] transition-all uppercase shadow-xl shadow-purple-500/20 truncate">Explanation</button>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="mb-16">
-                <h3 class="font-black text-xs tracking-widest uppercase mb-4 opacity-30">Description</h3>
-                <p id="store-app-desc" class="text-white/60 text-sm leading-relaxed max-w-2xl font-medium"></p>
-            </div>
+                <div id="explanation-content" class="bg-white/[0.03] rounded-3xl border border-white/10 mb-12 overflow-hidden max-h-0 transition-all duration-500">
+                    <div class="p-8 md:p-12">
+                        <h4 class="text-purple-400 font-black text-xs uppercase tracking-widest mb-6">Technical Breakdown & Mod Features</h4>
+                        <div id="explanation-text" class="text-white/60 text-sm leading-relaxed space-y-6"></div>
+                    </div>
+                </div>
 
-            <div class="mb-20">
-                <h3 class="font-black text-xs tracking-widest uppercase mb-6 opacity-30">Similar Mods</h3>
-                <div id="similar-list" class="flex gap-6 overflow-x-auto pb-4 no-scrollbar"></div>
+                <div class="mt-16">
+                    <div class="flex items-center justify-between mb-8 px-2">
+                        <h3 class="font-black text-[10px] tracking-[0.3em] uppercase opacity-30">More Premium Mods</h3>
+                    </div>
+                    <div id="horizontal-related-list" class="horizontal-list-wrapper no-scrollbar"></div>
+                </div>
             </div>
         </div>
     </div>
 
-    <footer class="text-center py-16 border-t border-white/5 bg-black/20">
-        <p class="opacity-30 text-[9px] font-black tracking-[0.5em] uppercase mb-4">NIO-MOD GLOBAL PREMIER DIRECTORY</p>
-    </footer>
-
     <script>
         const database = [
-            { title: "Red Dead Redemption", cat: "Games", size: "6.26GB", ver: "Netflix-v1.50", dev: "Netflix Unlocked", img: "https://i.imgur.com/f0Jq2h6.jpeg", link: "https://www.mediafire.com/file_premium/ec3x4avokkt6ik0/Red-Dead-Redemption-NETFLIX-v1.50.60293175-unlocked-apkvision.apks/file", info: "Rockstar's Western masterpiece. Full Netflix edition unlocked." },
-            { title: "Spotify Premium", cat: "Music", size: "177.43MB", ver: "v9.0.60.128", dev: "Premium Unlocked", img: "https://i.imgur.com/292SV9C.jpeg", link: "https://www.mediafire.com/file/a1rq6s3opojrn6h/Spotify_v9.0.60.128_MOD%20(1).apk/file", info: "No-ad music streaming with high fidelity audio support." },
-            { title: "Stick War: Legacy", cat: "Games", size: "122.7MB", ver: "v2025.1.196", dev: "CZ MODS", img: "https://i.imgur.com/lDGVPNi.jpeg", link: "https://www.mediafire.com/file/r049ct855vgqs0b/Stick+War+Legacy+Mod+Apk+v2025.1.196+By+CZ+.apk/file", info: "Unlimited gems and resources for the classic strategy title." },
-            { title: "Car Simulator", cat: "Games", size: "716.02MB", ver: "v1.60.2", dev: "Safefileku Mod", img: "https://i.imgur.com/QSROgs6.jpeg", link: "https://www.mediafire.com/file/vlyzmzkoxyonyul/Car+Simulator+Mod+Apk+V1.60.2+(Safefileku).zip/file", info: "Realistic driving simulation with unlimited resources." },
-            { title: "Stumble Guys", cat: "Games", size: "235MB", ver: "v0.93.5", dev: "Premium Mod Menu", img: "https://i.imgur.com/sy4SAX4.jpeg", link: "https://www.mediafire.com/file/n49j9mcenc4m2ou/Mod_Menu_Stumble_Guys_v0.93.5_p150_-.apk/file?dkey=enmcdgqn9so&r=381", info: "Advanced Mod Menu with skins, emotes, and bypass features." },
-            { title: "CapCut Pro", cat: "Edit", size: "285.66MB", ver: "v15.8.0", dev: "Pro Unlocked", img: "https://i.imgur.com/o6C6OUz.jpeg", link: "https://www.mediafire.com/file/wdqkq0x8ioge2k6/CapCut_v15.8.0_%28Pro%29_fix.apk/file", info: "Ultimate video editor with all premium filters and effects unlocked." },
-            { 
-                title: "Wink VIP", 
-                cat: "Edit", 
-                size: "Varies", 
-                ver: "v2.22.5", 
-                dev: "NIO-MODS", 
-                img: "https://i.imgur.com/8kwLpNE.jpeg", 
-                link: "https://www.mediafire.com/file/t98mwy191y8bc07/WINK-NIO-MODS.apk/file", 
-                info: "Professional retouching tool. VIP features unlocked including AI face tools and high-definition export." 
-            },
-            { title: "DramaBox", cat: "Watch", size: "82.59MB", ver: "Latest", dev: "VIP Unlocked", img: "https://i.imgur.com/fm9I4HW.jpeg", link: "https://www.mediafire.com/file/my7iw9nm6n3hhyb/DramaBox_%28SFILE.MOBI%29.apk/file", info: "Trending short dramas and series. VIP access unlocked." },
-            { 
-                title: "Delta Executor", 
-                cat: "Games", 
-                ver: "2.703.1353", 
-                dev: "Delta Team", 
-                img: "https://i.imgur.com/rNdIjtZ.jpeg", 
-                info: "Powerful Roblox Script Executor for Android & iOS.",
-                isMultiPlatform: true,
-                platforms: {
-                    Android: { size: "215.7MB", link: "https://www.mediafire.com/file/a0odsu42lu81enx/Delta-2.703.1353.apk/file" },
-                    iOS: { size: "115.29MB", link: "https://www.mediafire.com/file/viwijhtn0l3x7l1/Delta-2.703.1352.ipa/file" }
-                }
-            },
-            { title: "JxstrBan", cat: "Games", size: "3.12MB", ver: "v1.0", dev: "Jxstr Utility", img: "https://i.imgur.com/jG3exSo.jpeg", link: "https://www.mediafire.com/file/ki3b46tnbhrxtiy/com.py.JxstrBan_1.0.apk/file", info: "Advanced game utility and bypass tool." },
-            { title: "A1 Foto", cat: "Edit", size: "40.91MB", ver: "v1.18.1", dev: "A1 Studio", img: "https://i.imgur.com/0nlNUM3.jpeg", link: "https://www.mediafire.com/file/xvaajv3bp9jdego/AIFoto+v1.18.1.7z/file?dkey=ok6u2lt4i3t&r=755", info: "Next-gen AI photo editor. Unlock pro-level effects." },
-            {
-                title: "Mcpe",
-                cat: "Games",
-                ver: "1.21.131",
-                dev: "Mojang / Patched",
-                img: "https://i.imgur.com/q9EVrKH.jpeg",
-                info: "Minecraft Pocket Edition v1.21.131.",
-                isMultiPlatform: true,
-                platforms: {
-                    "No-Music (64bit)": { size: "Varies", link: "https://www.mediafire.com/file/w13cghqakfcs4j3/MCPE-Patched-No-Music-64bit-1.21.131.apk.zip/file" },
-                    "No-Music (32bit)": { size: "Varies", link: "https://www.mediafire.com/file/4gsqxl7gjdoeohb/MCPE-Patched-No-Music-32bit-1.21.131.apk.zip/file" },
-                    "Music Full (600MB+)": { size: "600MB+", link: "https://www.mediafire.com/file/tgco48l7hwkwrcr/MCPE-Patched-Music-64bit-1.21.131.apk.zip/file" }
-                }
-            },
-            { title: "Netflix", cat: "Watch", size: "47.57MB", ver: "9.48.0", dev: "Premium Mod", img: "https://i.imgur.com/A7j4tXZ.jpeg", link: "https://www.mediafire.com/file/5cmc23z0n1req7x/Netflix_v9.48.0_MOD.7z/file", info: "Access the vast Netflix library with premium features unlocked." }
+            { id: 1, title: "ChatGPT Mod", cat: "Tools", size: "21.54MB", ver: "4.0", dev: "OpenAI", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMdM9MEQ0ExL1PmInT3U5I8v63YXBEdoIT0Q&s", link: "https://sfl.gl/JXsZ" },
+            { id: 2, title: "Alight Motion", cat: "Edit", size: "106.55MB", ver: "5.0.272", dev: "NIO-MODS", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyNwrzgtIyiGljHYMmKfJ_79llskOVp2msvR3xn1B7Z1WF4NXcqfK9KGg&s=10", link: "https://sfl.gl/BX6a9L" },
+            { id: 3, title: "CapCut Pro", cat: "Edit", size: "299.8MB", ver: "16.4.0", dev: "ByteDance", img: "https://temanakun.com/wp-content/uploads/2024/11/Capcut-Pro.jpg", link: "https://sfl.gl/nGIXBHqG" },
+            { id: 4, title: "Hill Climb Racing", cat: "Games", size: "117MB", ver: "1.67.8", dev: "Fingersoft", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSagTaUIHMw9BZ24-ZPyviuGoP9JeJlhk2MXWv44flhZRZkEA-N3vk3xrE&s=10", link: "https://sfl.gl/WqUJK2" },
+            { id: 7, title: "Fr legend mod apk", cat: "Games", size: "140.63MB", ver: "0.4.2", dev: "Fr Legend Mod", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZwM_jHCnOxwLEm27pIQ7NFBSRFxDW0GTBtrHMeoqWehLozYZoLo-1DR6y&s=10", link: "https://sfl.gl/iSqr" },
+            { id: 8, title: "Stickwar: legacy mod", cat: "Games", size: "126.93MB", ver: "2026.1.16", dev: "Stickwar Mod Team", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7SCsabszG6mD7MJOvWMmKYLnZtZ-qkvSdd90ZMVofbw&s=10", link: "https://sfl.gl/4yT8m" },
+            { id: 9, title: "i-am-monkey-mod", cat: "Games", size: "485.26MB", ver: "1.1.2", dev: "Monkey Mod Studio", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0Ze4VrkF3BMcYD7rhuAdrDqp0Nuks9BNGFA&s", link: "https://sfl.gl/gwZus27" },
+            { id: 10, title: "Spotify mod", cat: "Entertainment", size: "130.62MB", ver: "9.1.14.864", dev: "Spotify Mod Team", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdxA0EMLltuoBhKV_osRZJDN4CghdiUNNYjXWyIAPoTF4T7n3jxirudHc&s=10", link: "https://sfl.gl/4wjTg0" },
+            { id: 11, title: "Tower war mod apk", cat: "Games", size: "143.85MB", ver: "1.26.2", dev: "SayGames Ltd", img: "https://play-lh.googleusercontent.com/7G_QBBufLp71rnqfwEGF9XnF33H5wx-mD9wxpKAJvVXxcc7YCgsT4yxpT7GF7sGprf8=w240-h480-rw", link: "https://sfl.gl/zar2" },
+            { id: 12, title: "Genshin Impact", cat: "Games", size: "601.1MB", ver: "v1.18.1", dev: "miHoYo", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQH2cUxmAof5GRpcd_YsFEX-V-eTtRiEoGKltW7P-2lKw&s=10", link: "https://sfl.gl/ecjA2L4Z" },
+            { id: 13, title: "Red Dead Redemption", cat: "Games", size: "6.26GB", ver: "Rdr netlix", dev: "Rockstar Games", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdikWJgJBBn3wvU94f96KGjObiyLOsoEAJzg&s", link: "https://www.mediafire.com/file_premium/ec3x4avokkt6ik0/Red-Dead-Redemption-NETFLIX-v1.50.60293175-unlocked-apkvision.apks/file" }
         ];
 
-        let currentSlide = 0;
-        const slider = document.getElementById('slider');
-        const slideCount = 2;
+        let currentCategory = 'All';
+        let currentSort = 'Latest';
 
-        function initSlider() {
-            const dots = document.getElementById('dot-container');
-            dots.innerHTML = '';
-            for(let i=0; i<slideCount; i++) {
-                const dot = document.createElement('div');
-                dot.className = `dot ${i === 0 ? 'active' : ''}`;
-                dot.onclick = () => jumpToSlide(i);
-                dots.appendChild(dot);
-            }
+        function toggleSort() {
+            currentSort = currentSort === 'Latest' ? 'AZ' : 'Latest';
+            document.getElementById('sortLabel').innerText = currentSort === 'Latest' ? 'Sort: Latest' : 'Sort: A-Z';
+            applyFiltersAndSort();
         }
 
-        function updateSlider() {
-            const slides = document.querySelectorAll('.slide');
-            const dots = document.querySelectorAll('.dot');
-            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
-            slides.forEach((s, i) => s.classList.toggle('active', i === currentSlide));
-            dots.forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+        function filterMods(category, btn) {
+            document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            currentCategory = category;
+            applyFiltersAndSort();
         }
 
-        function nextSlide() { currentSlide = (currentSlide + 1) % slideCount; updateSlider(); }
-        function prevSlide() { currentSlide = (currentSlide - 1 + slideCount) % slideCount; updateSlider(); }
-        function jumpToSlide(idx) { currentSlide = idx; updateSlider(); }
+        function applyFiltersAndSort() {
+            let data = currentCategory === 'All' ? [...database] : database.filter(d => d.cat === currentCategory);
+            const query = document.getElementById('searchBox').value.toLowerCase();
+            if (query) data = data.filter(d => d.title.toLowerCase().includes(query));
 
-        let slideTimer = setInterval(nextSlide, 5000);
+            if (currentSort === 'AZ') data.sort((a, b) => a.title.localeCompare(b.title));
+            else data.sort((a, b) => b.id - a.id);
 
-        function handleViewClick(index) {
-            const loader = document.getElementById('pre-loader');
-            const bar = document.getElementById('pre-loader-bar');
-            const status = document.getElementById('pre-loader-text');
-            
-            loader.classList.remove('hidden');
-            bar.style.width = '0%';
-            status.innerText = 'Checking Security...';
-
-            setTimeout(() => {
-                bar.style.width = '100%';
-                status.innerText = 'Access Granted';
+            const grid = document.getElementById('grid');
+            grid.innerHTML = '';
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'mod-card animate-pop';
+                card.style.background = `url(${item.img})`;
+                card.onclick = () => handleViewClick(item.id);
                 
-                setTimeout(() => {
-                    loader.classList.add('hidden');
-                    openStore(index);
-                }, 400);
-            }, 1200);
+                card.innerHTML = `
+                    <div class="card-fade"></div>
+                    <div class="card-content">
+                        <span class="text-[7px] font-black text-white bg-blue-600/90 px-2 py-1 rounded-md uppercase tracking-[0.2em] mb-3 inline-block">PREMIUM MOD</span>
+                        <h3 class="text-xl font-black mb-1 tracking-tight text-white uppercase truncate">${item.title}</h3>
+                        <p class="text-white/60 text-[10px] mb-4">${item.cat} • v${item.ver}</p>
+                        <button class="w-full py-3.5 rounded-xl bg-white text-black font-black text-[10px] tracking-widest uppercase hover:bg-blue-600 hover:text-white transition-all shadow-2xl">VIEW DETAILS</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
         }
 
-        function openStore(index) {
-            const item = database[index];
-            const storeView = document.getElementById('store-view');
-            const storeContent = document.getElementById('store-content');
-            
+        function handleViewClick(id) {
+            const item = database.find(d => d.id === id);
             document.getElementById('main-view').classList.add('hidden');
-            storeView.classList.remove('hidden');
-            
+            document.getElementById('store-view').classList.remove('hidden');
             document.getElementById('store-app-title').innerText = item.title;
-            document.getElementById('store-app-desc').innerText = item.info;
             document.getElementById('store-app-dev').innerText = item.dev;
             document.getElementById('store-app-icon').src = item.img;
+            document.getElementById('store-app-size').innerText = item.size;
+            document.getElementById('store-app-ver').innerText = item.ver;
+            document.getElementById('install-btn').onclick = (e) => {
+                e.stopPropagation();
+                window.open(item.link, '_blank');
+            };
             
-            const singleSec = document.getElementById('install-section-single');
-            const multiSec = document.getElementById('install-section-multi');
-            const installBtn = document.getElementById('install-btn');
+            const textEl = document.getElementById('explanation-text');
+            textEl.innerHTML = `
+                <p class="font-bold text-white mb-2 uppercase tracking-tighter">Premium Features Unlocked:</p>
+                <ul class="list-disc pl-5 mb-6 opacity-80">
+                    <li>Full Premium Access Unlocked.</li>
+                    <li>No Advertisements or Tracking.</li>
+                    <li>Exclusive Modded Content & Features.</li>
+                    <li>Optimized performance and battery usage.</li>
+                </ul>
+                <p class="font-bold text-white mb-2 uppercase tracking-tighter">Technical Details:</p>
+                <p class="opacity-70 leading-relaxed mb-4">The ${item.title} Mod v${item.ver} has been verified for security and is compatible with Android 8.0+. Enjoy the ultimate premium experience without limitations.</p>
+            `;
 
-            if(item.isMultiPlatform) {
-                singleSec.classList.add('hidden');
-                multiSec.classList.remove('hidden');
-                document.getElementById('store-app-size').innerText = "Varies";
-                multiSec.innerHTML = '';
-                Object.keys(item.platforms).forEach(key => {
-                    const btn = document.createElement('button');
-                    btn.className = "w-full bg-white/5 border border-white/10 hover:bg-white/10 text-white py-4 rounded-xl font-black text-xs tracking-[0.2em] transition-all mb-3 uppercase";
-                    btn.innerText = `Download ${key}`;
-                    btn.onclick = () => startDownload(key, item);
-                    multiSec.appendChild(btn);
-                });
-            } else {
-                singleSec.classList.remove('hidden');
-                multiSec.classList.add('hidden');
-                document.getElementById('store-app-size').innerText = item.size;
-                installBtn.onclick = () => startDownload('single', item);
-            }
+            renderHorizontalRelatedList(item.id);
+            document.getElementById('explanation-content').style.maxHeight = '0px';
+            document.getElementById('store-content').classList.add('animate-slide-up');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
-            const similarList = document.getElementById('similar-list');
-            similarList.innerHTML = '';
-            const filtered = database.filter(d => d.title !== item.title).slice(0, 8);
-            filtered.forEach(sItem => {
-                const globalIdx = database.indexOf(sItem);
-                const div = document.createElement('div');
-                div.className = "similar-card cursor-pointer group";
-                div.onclick = () => {
-                    storeContent.classList.remove('animate-slide-up');
-                    setTimeout(() => openStore(globalIdx), 50);
-                };
-                div.innerHTML = `
-                    <img src="${sItem.img}" class="w-24 h-24 rounded-2xl mb-3 shadow-lg border border-white/5 object-cover group-hover:border-blue-500/50 transition-colors">
-                    <p class="text-[11px] font-bold line-clamp-1 mb-0.5">${sItem.title}</p>
-                    <p class="text-[9px] opacity-40 font-black uppercase tracking-widest">${sItem.cat}</p>
+        function renderHorizontalRelatedList(excludeId) {
+            const listEl = document.getElementById('horizontal-related-list');
+            listEl.innerHTML = '';
+            
+            database.filter(mod => mod.id !== excludeId).forEach(mod => {
+                const card = document.createElement('div');
+                card.className = 'apk-list-card';
+                card.innerHTML = `
+                    <div class="flex items-center mb-6">
+                        <img src="${mod.img}" class="w-14 h-14 rounded-2xl object-cover border border-white/10 mr-4">
+                        <div class="flex-grow">
+                            <h4 class="text-[13px] font-black uppercase tracking-tight truncate w-32">${mod.title}</h4>
+                            <p class="text-[9px] font-bold text-blue-400 uppercase tracking-widest">${mod.size}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between mt-auto">
+                        <span class="text-[8px] font-black opacity-30 uppercase tracking-[0.2em]">${mod.cat}</span>
+                        <button onclick="handleViewClick(${mod.id})" class="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl font-black text-[9px] uppercase transition-all tracking-widest shadow-lg shadow-blue-500/10">Get</button>
+                    </div>
                 `;
-                similarList.appendChild(div);
+                listEl.appendChild(card);
             });
+        }
 
-            document.getElementById('progress-container').classList.add('hidden');
-            storeContent.classList.remove('animate-slide-up');
-            void storeContent.offsetWidth; 
-            storeContent.classList.add('animate-slide-up');
-            window.scrollTo(0,0);
+        function toggleExplanation() {
+            const exp = document.getElementById('explanation-content');
+            exp.style.maxHeight = exp.style.maxHeight === '0px' || !exp.style.maxHeight ? '1000px' : '0px';
         }
 
         function goHome() {
@@ -471,99 +410,17 @@
             document.getElementById('main-view').classList.remove('hidden');
         }
 
-        function startDownload(type, item) {
-            const progress = document.getElementById('progress-container');
-            const bar = document.getElementById('progress-fill');
-            const statusText = document.getElementById('progress-status');
-            const percentText = document.getElementById('progress-percent');
-            
-            document.getElementById('install-section-single').classList.add('hidden');
-            document.getElementById('install-section-multi').classList.add('hidden');
-            progress.classList.remove('hidden');
-            
-            let finalLink = item.isMultiPlatform ? item.platforms[type].link : item.link;
+        document.getElementById('searchBox').addEventListener('input', applyFiltersAndSort);
 
-            let val = 0;
-            const timer = setInterval(() => {
-                val += 2;
-                
-                if (val < 30) statusText.innerText = 'Verifying...';
-                else if (val < 70) statusText.innerText = 'Downloading...';
-                else if (val < 95) statusText.innerText = 'Finalizing...';
-                else statusText.innerText = 'Ready!';
+        let currentSlide = 0;
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % 2;
+            const s = document.getElementById('slider');
+            if(s) s.style.transform = `translateX(-${currentSlide * 100}%)`;
+            document.querySelectorAll('.slide').forEach((sl, i) => sl.classList.toggle('active', i === currentSlide));
+        }, 6000);
 
-                if (val >= 100) {
-                    val = 100;
-                    clearInterval(timer);
-                    window.location.href = finalLink;
-                    
-                    setTimeout(() => {
-                        if(item.isMultiPlatform) document.getElementById('install-section-multi').classList.remove('hidden');
-                        else document.getElementById('install-section-single').classList.remove('hidden');
-                        progress.classList.add('hidden');
-                        val = 0;
-                        bar.style.width = '0%';
-                        percentText.innerText = '0%';
-                    }, 3000);
-                }
-                bar.style.width = val + '%';
-                percentText.innerText = val + '%';
-            }, 60);
-        }
-
-        function toggleInfo(id) {
-            const el = document.getElementById(`info-${id}`);
-            const isActive = el.classList.contains('show');
-            document.querySelectorAll('.explanation-tab').forEach(tab => tab.classList.remove('show'));
-            if (!isActive) el.classList.add('show');
-        }
-
-        function render(data) {
-            const grid = document.getElementById('grid');
-            grid.innerHTML = '';
-            data.forEach((item, i) => {
-                const globalIdx = database.indexOf(item);
-                const card = document.createElement('div');
-                card.className = `mod-card p-7 rounded-[2rem] flex flex-col animate-pop shadow-lg`;
-                card.style.animationDelay = `${i * 0.04}s`;
-                card.innerHTML = `
-                    <div class="flex justify-between items-start mb-6">
-                        <img src="${item.img}" class="w-16 h-16 rounded-2xl shadow-lg object-cover border border-white/5">
-                        <button onclick="toggleInfo(${globalIdx})" class="w-10 h-10 rounded-xl bg-[#bc13fe]/10 border border-[#bc13fe]/20 flex items-center justify-center text-[#bc13fe]">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        </button>
-                    </div>
-                    <div class="flex-grow">
-                        <span class="text-[9px] font-black text-blue-400 uppercase tracking-widest">${item.cat}</span>
-                        <h3 class="text-xl font-extrabold mb-1 tracking-tight">${item.title}</h3>
-                        <p class="text-white/40 text-[11px] font-medium tracking-tighter">${item.ver}</p>
-                        <div id="info-${globalIdx}" class="explanation-tab">
-                            <p class="text-white/70 text-[10px] leading-relaxed font-medium">${item.info}</p>
-                        </div>
-                    </div>
-                    <button onclick="handleViewClick(${globalIdx})" class="mt-8 w-full py-3.5 rounded-xl bg-white/5 border border-white/10 font-black text-[10px] tracking-widest uppercase hover:bg-white hover:text-black transition-all">VIEW</button>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        function filterMods(category, btn) {
-            document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
-            btn.classList.add('active');
-            const results = category === 'All' ? database : database.filter(d => d.cat === category);
-            render(results);
-        }
-
-        document.getElementById('searchBox').addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase();
-            const filtered = database.filter(d => d.title.toLowerCase().includes(query));
-            render(filtered);
-        });
-
-        window.addEventListener('DOMContentLoaded', () => {
-            initSlider();
-            render(database);
-        });
+        window.onload = applyFiltersAndSort;
     </script>
 </body>
 </html>
