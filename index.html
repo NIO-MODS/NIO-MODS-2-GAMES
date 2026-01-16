@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NIO-mod | Infinite Premium Mods</title>
+    <title>NIO-mod | Organized Premium Mods</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Uncut+Sans:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
@@ -32,7 +32,6 @@
             z-index: -1;
         }
 
-        /* Fixed Premium APK Card */
         .mod-card {
             background-size: cover !important;
             background-position: center !important;
@@ -45,15 +44,13 @@
             justify-content: flex-end;
             padding: 1.75rem;
             position: relative;
-            overflow: hidden; /* Clips the inner fade to the border radius */
+            overflow: hidden;
             transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
             cursor: pointer;
         }
 
-        /* Seamless Fade Overlay */
         .card-fade {
             position: absolute;
-            /* Using inset -1px to ensure the fade slightly overlaps the border, removing gaps */
             inset: -1px; 
             width: calc(100% + 2px);
             height: calc(100% + 2px);
@@ -77,28 +74,22 @@
             z-index: 2;
         }
 
-        /* Banner Tab - Reduced by 3px */
-        .banner-tab {
-            padding: 1px 9px !important;
-            border-radius: 6px;
-            font-size: 9px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            margin-bottom: 1rem;
-            width: fit-content;
+        .category-tab {
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .category-tab.active {
-            background: #fff;
-            color: #000;
-            box-shadow: 0 10px 25px rgba(255,255,255,0.2);
+            background: white !important;
+            color: black !important;
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
         }
 
         .hidden { display: none; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         
-        /* Slider & Animations */
         .slider-container {
             position: relative;
             width: 100%;
@@ -145,43 +136,29 @@
         @keyframes pop { 0% { transform: scale(0.96); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         .animate-pop { animation: pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
 
-        @keyframes slideUpFade {
-            0% { transform: translateY(50px); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
+        .apj-badge {
+            background: linear-gradient(45deg, #00d2ff, #bc13fe);
+            animation: apj-pulse 2s infinite;
         }
-        .animate-slide-up { animation: slideUpFade 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
-
-        .horizontal-list-wrapper {
-            display: flex;
-            gap: 1.25rem;
-            overflow-x: auto;
-            padding: 10px 0 20px 0;
-            scroll-snap-type: x mandatory;
-        }
-
-        .apk-list-card {
-            flex: 0 0 280px;
-            scroll-snap-align: start;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 20px;
-            border-radius: 32px;
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
+        @keyframes apj-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 210, 255, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 210, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 210, 255, 0); }
         }
     </style>
 </head>
 <body class="antialiased">
     <div class="mesh-bg"></div>
 
-    <!-- Nav -->
     <nav class="flex items-center justify-between px-6 md:px-12 py-5 sticky top-0 z-[60] backdrop-blur-2xl bg-black/40 border-b border-white/5">
         <div class="flex items-center space-x-4 cursor-pointer" onclick="goHome()">
             <div class="w-10 h-10 bg-gradient-to-br from-[#bc13fe] to-[#00d2ff] rounded-xl flex items-center justify-center shadow-xl">
                 <span class="font-black text-xl italic text-black">N</span>
             </div>
-            <span class="text-xl font-black tracking-tighter uppercase hidden sm:block">NIO<span class="text-blue-500">-</span>mod</span>
+            <div class="flex flex-col">
+                <span class="text-xl font-black tracking-tighter uppercase hidden sm:block">NIO<span class="text-blue-500">-</span>mod</span>
+                <span class="text-[8px] font-black tracking-[0.3em] text-blue-400 -mt-1 hidden sm:block uppercase">Verified by APJ</span>
+            </div>
         </div>
 
         <div class="relative group max-w-md w-full ml-4">
@@ -194,90 +171,75 @@
     </nav>
 
     <main id="main-view" class="max-w-7xl mx-auto px-6 pt-12 pb-32">
-        <!-- Featured Slider -->
         <section class="relative mb-16 animate-pop h-[400px] md:h-[500px] rounded-[2.5rem] overflow-hidden border border-white/10 shadow-2xl group">
             <div id="slider" class="slider-container">
                 <div class="slide active">
-                    <img src="https://play-lh.googleusercontent.com/7G_QBBufLp71rnqfwEGF9XnF33H5wx-mD9wxpKAJvVXxcc7YCgsT4yxpT7GF7sGprf8=w240-h480-rw" class="slide-img" alt="Tower War">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-gUvNoMArsCAlkun4RFTAnyjtSOYrbOlj8k-tLZR0Ow&s=10" class="slide-img" alt="Movibox">
                     <div class="slide-content">
-                        <span class="banner-tab bg-red-600">TACTICAL STRATEGY</span>
-                        <h2 class="text-4xl md:text-6xl font-black mb-4 leading-[0.9] tracking-tighter uppercase">TOWER WAR <br><span class="text-red-400">Tactical Conquest</span></h2>
-                        <button onclick="handleViewClick(11)" class="w-fit bg-white text-black px-10 py-4 rounded-xl font-black text-sm tracking-widest hover:bg-red-600 hover:text-white transition-all transform active:scale-95 uppercase">Get Mod</button>
+                        <span class="px-3 py-1 bg-purple-600 rounded-lg text-[10px] font-black uppercase tracking-widest mb-4 w-fit">NEW UPDATE</span>
+                        <h2 class="text-4xl md:text-6xl font-black mb-4 leading-[0.9] tracking-tighter uppercase">MOVIBOX <br><span class="text-purple-400">Stream Master</span></h2>
+                        <button onclick="handleViewClick(17)" class="w-fit bg-white text-black px-10 py-4 rounded-xl font-black text-sm tracking-widest hover:bg-purple-600 hover:text-white transition-all transform active:scale-95 uppercase">Get Mod</button>
                     </div>
                 </div>
                 <div class="slide">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdxA0EMLltuoBhKV_osRZJDN4CghdiUNNYjXWyIAPoTF4T7n3jxirudHc&s=10" class="slide-img" alt="Spotify">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7hwKuPSGVsrkPnfUC9LIXjW8jGhHs9mUwnQcp3fNCrQ&s=10" class="slide-img" alt="Dramabox">
                     <div class="slide-content">
-                        <span class="banner-tab bg-green-600">PREMIUM UNLOCKED</span>
-                        <h2 class="text-4xl md:text-6xl font-black mb-4 leading-[0.9] tracking-tighter uppercase">SPOTIFY <br><span class="text-green-400">Music Mod</span></h2>
-                        <button onclick="handleViewClick(10)" class="w-fit bg-white text-black px-10 py-4 rounded-xl font-black text-sm tracking-widest hover:bg-green-600 hover:text-white transition-all transform active:scale-95 uppercase">Get Now</button>
+                        <span class="px-3 py-1 bg-red-600 rounded-lg text-[10px] font-black uppercase tracking-widest mb-4 w-fit">CINEMA ELITE</span>
+                        <h2 class="text-4xl md:text-6xl font-black mb-4 leading-[0.9] tracking-tighter uppercase">DRAMABOX <br><span class="text-red-400">Premium Content</span></h2>
+                        <button onclick="handleViewClick(16)" class="w-fit bg-white text-black px-10 py-4 rounded-xl font-black text-sm tracking-widest hover:bg-red-600 hover:text-white transition-all transform active:scale-95 uppercase">Get Mod</button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Filters -->
-        <div class="flex flex-col gap-6 mb-12">
-            <button id="sortToggle" onclick="toggleSort()" class="w-fit flex items-center gap-3 bg-white/5 border border-white/10 px-6 py-3 rounded-2xl hover:bg-white/10 transition-all group">
-                <span id="sortLabel" class="text-[10px] font-black uppercase tracking-[0.2em] text-blue-400">Sort: Latest</span>
-                <div class="w-px h-4 bg-white/10"></div>
-                <svg class="w-4 h-4 text-white/40 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path>
-                </svg>
-            </button>
-
-            <div class="flex items-center gap-3 overflow-x-auto pb-2 no-scrollbar">
-                <button onclick="filterMods('All', this)" class="category-tab active px-8 py-3.5 rounded-xl font-black text-[11px] uppercase tracking-[0.15em] whitespace-nowrap">All</button>
-                <button onclick="filterMods('Games', this)" class="category-tab bg-white/5 px-8 py-3.5 rounded-xl font-black text-[11px] uppercase tracking-[0.15em] whitespace-nowrap hover:bg-white/10">Games</button>
-                <button onclick="filterMods('Entertainment', this)" class="category-tab bg-white/5 px-8 py-3.5 rounded-xl font-black text-[11px] uppercase tracking-[0.15em] whitespace-nowrap hover:bg-white/10">Entertainment</button>
-                <button onclick="filterMods('Edit', this)" class="category-tab bg-white/5 px-8 py-3.5 rounded-xl font-black text-[11px] uppercase tracking-[0.15em] whitespace-nowrap hover:bg-white/10">Edit</button>
+        <div class="flex flex-col gap-8 mb-12">
+            <div class="flex items-center gap-4 overflow-x-auto pb-4 no-scrollbar">
+                <button onclick="filterMods('All', this)" class="category-tab active bg-white/5 border border-white/10 px-6 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">All</button>
+                <button onclick="filterMods('War', this)" class="category-tab bg-white/5 border border-white/10 px-6 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">War</button>
+                <button onclick="filterMods('Role Play', this)" class="category-tab bg-white/5 border border-white/10 px-6 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Role Play</button>
+                <button onclick="filterMods('Car Drive', this)" class="category-tab bg-white/5 border border-white/10 px-6 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Car Drive</button>
+                <button onclick="filterMods('Music', this)" class="category-tab bg-white/5 border border-white/10 px-6 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Music</button>
+                <button onclick="filterMods('Edit', this)" class="category-tab bg-white/5 border border-white/10 px-6 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Edit</button>
+                <button onclick="filterMods('Watch', this)" class="category-tab bg-white/5 border border-white/10 px-6 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Watch</button>
+                <button onclick="filterMods('Ai', this)" class="category-tab bg-white/5 border border-white/10 px-6 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Ai</button>
             </div>
         </div>
 
         <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
     </main>
 
-    <!-- Store View Overlay -->
     <div id="store-view" class="hidden fixed inset-0 z-50 bg-[#020617] overflow-y-auto pt-24 pb-20">
-        <div id="store-content" class="max-w-4xl mx-auto px-6 opacity-0">
+        <div id="store-content" class="max-w-4xl mx-auto px-6 opacity-0 transition-opacity duration-500">
             <button onclick="goHome()" class="flex items-center gap-2 text-white/50 hover:text-white mb-10 group">
                 <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                <span class="font-bold text-xs tracking-widest uppercase">Library</span>
+                <span class="font-bold text-xs tracking-widest uppercase">Back Home</span>
             </button>
 
             <div class="bg-white/[0.02] border border-white/5 rounded-[3rem] p-8 md:p-12 mb-8">
                 <div class="flex flex-col md:flex-row gap-10 items-start mb-12">
                     <img id="store-app-icon" class="w-32 h-32 md:w-44 md:h-44 rounded-[2.5rem] shadow-2xl object-cover border border-white/10">
-                    
                     <div class="flex-grow w-full">
-                        <h1 id="store-app-title" class="text-4xl md:text-6xl font-black tracking-tighter mb-1 uppercase"></h1>
+                        <div class="flex items-center gap-3 mb-2">
+                            <h1 id="store-app-title" class="text-4xl md:text-6xl font-black tracking-tighter uppercase"></h1>
+                            <span class="apj-badge px-2 py-0.5 rounded text-[8px] font-black tracking-widest text-black">APJ</span>
+                        </div>
                         <p id="store-app-dev" class="text-blue-500 font-bold tracking-widest text-[10px] uppercase mb-8"></p>
-                        
                         <div class="flex flex-wrap gap-8 mb-10">
                             <div><p id="store-app-size" class="text-xl font-black"></p><p class="text-[9px] opacity-40 font-bold uppercase tracking-widest">Size</p></div>
                             <div class="hidden md:block w-px h-10 bg-white/10"></div>
                             <div><p id="store-app-ver" class="text-xl font-black"></p><p class="text-[9px] opacity-40 font-bold uppercase tracking-widest">Version</p></div>
                         </div>
-
                         <div class="flex flex-row gap-3 w-full">
-                            <button id="install-btn" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-2xl font-black text-[10px] md:text-xs tracking-[0.2em] transition-all uppercase shadow-xl shadow-blue-500/20 truncate">Install APK</button>
-                            <button onclick="toggleExplanation()" class="flex-1 bg-[#bc13fe] hover:bg-[#a011d8] text-white py-4 rounded-2xl font-black text-[10px] md:text-xs tracking-[0.2em] transition-all uppercase shadow-xl shadow-purple-500/20 truncate">Explanation</button>
+                            <button id="install-btn" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-2xl font-black text-xs tracking-widest uppercase shadow-xl transition-all">Download APK</button>
+                            <button onclick="toggleExplanation()" class="flex-1 bg-white/10 hover:bg-white/20 text-white py-4 rounded-2xl font-black text-xs tracking-widest uppercase transition-all">Info</button>
                         </div>
                     </div>
                 </div>
-
                 <div id="explanation-content" class="bg-white/[0.03] rounded-3xl border border-white/10 mb-12 overflow-hidden max-h-0 transition-all duration-500">
-                    <div class="p-8 md:p-12">
-                        <h4 class="text-purple-400 font-black text-xs uppercase tracking-widest mb-6">Technical Breakdown & Mod Features</h4>
-                        <div id="explanation-text" class="text-white/60 text-sm leading-relaxed space-y-6"></div>
+                    <div class="p-8">
+                        <h4 class="text-blue-400 font-black text-[10px] uppercase tracking-widest mb-4">Technical Breakdown</h4>
+                        <div id="explanation-text" class="text-white/60 text-sm space-y-4"></div>
                     </div>
-                </div>
-
-                <div class="mt-16">
-                    <div class="flex items-center justify-between mb-8 px-2">
-                        <h3 class="font-black text-[10px] tracking-[0.3em] uppercase opacity-30">More Premium Mods</h3>
-                    </div>
-                    <div id="horizontal-related-list" class="horizontal-list-wrapper no-scrollbar"></div>
                 </div>
             </div>
         </div>
@@ -285,42 +247,51 @@
 
     <script>
         const database = [
-            { id: 1, title: "ChatGPT Mod", cat: "Tools", size: "21.54MB", ver: "4.0", dev: "OpenAI", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMdM9MEQ0ExL1PmInT3U5I8v63YXBEdoIT0Q&s", link: "https://sfl.gl/JXsZ" },
+            // War
+            { id: 14, title: "Free Fire", cat: "War", size: "486.97MB", ver: "1.120.1", dev: "Garena", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSS7Dy6s4Z2nCHNQegvlZsu4aiNcx9KyM7fpNWZmvxJXg&s=10", link: "https://sfl.gl/2QQ9cK" },
+            { id: 11, title: "Tower War Mod APK", cat: "War", size: "143.85MB", ver: "1.26.2", dev: "SayGames Ltd", img: "https://play-lh.googleusercontent.com/7G_QBBufLp71rnqfwEGF9XnF33H5wx-mD9wxpKAJvVXxcc7YCgsT4yxpT7GF7sGprf8=w240-h480-rw", link: "https://sfl.gl/zar2" },
+            { id: 8, title: "Stickwar: Legacy", cat: "War", size: "126.93MB", ver: "2026.1.16", dev: "Max Games Studios", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7SCsabszG6mD7MJOvWMmKYLnZtZ-qkvSdd90ZMVofbw&s=10", link: "https://sfl.gl/4yT8m" },
+            
+            // Role Play
+            { id: 13, title: "Red Dead Redemption", cat: "Role Play", size: "6.26GB", ver: "Netflix Edition", dev: "Rockstar Games", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdikWJgJBBn3wvU94f96KGjObiyLOsoEAJzg&s", link: "https://www.mediafire.com/file_premium/ec3x4avokkt6ik0/Red-Dead-Redemption-NETFLIX-v1.50.60293175-unlocked-apkvision.apks/file" },
+            { id: 12, title: "Genshin Impact", cat: "Role Play", size: "601.1MB", ver: "v1.18.1", dev: "miHoYo", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQH2cUxmAof5GRpcd_YsFEX-V-eTtRiEoGKltW7P-2lKw&s=10", link: "https://sfl.gl/ecjA2L4Z" },
+            { id: 9, title: "i-am-monkey-mod", cat: "Role Play", size: "485.26MB", ver: "1.1.2", dev: "Monkey Mod Studio", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0Ze4VrkF3BMcYD7rhuAdrDqp0Nuks9BNGFA&s", link: "https://sfl.gl/gwZus27" },
+
+            // Car Drive
+            { id: 7, title: "Fr Legend Mod APK", cat: "Car Drive", size: "140.63MB", ver: "0.4.2", dev: "Fr Legend Mod", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZwM_jHCnOxwLEm27pIQ7NFBSRFxDW0GTBtrHMeoqWehLozYZoLo-1DR6y&s=10", link: "https://sfl.gl/iSqr" },
+            { id: 4, title: "Hill Climb Racing", cat: "Car Drive", size: "117MB", ver: "1.67.8", dev: "Fingersoft", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSagTaUIHMw9BZ24-ZPyviuGoP9JeJlhk2MXWv44flhZRZkEA-N3vk3xrE&s=10", link: "https://sfl.gl/WqUJK2" },
+
+            // Music
+            { id: 10, title: "Spotify", cat: "Music", size: "130.62MB", ver: "9.1.14.864", dev: "Spotify Mod", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdxA0EMLltuoBhKV_osRZJDN4CghdiUNNYjXWyIAPoTF4T7n3jxirudHc&s=10", link: "https://sfl.gl/4wjTg0" },
+
+            // Edit
+            { id: 3, title: "CapCut", cat: "Edit", size: "299.8MB", ver: "16.4.0", dev: "ByteDance", img: "https://temanakun.com/wp-content/uploads/2024/11/Capcut-Pro.jpg", link: "https://sfl.gl/nGIXBHqG" },
             { id: 2, title: "Alight Motion", cat: "Edit", size: "106.55MB", ver: "5.0.272", dev: "NIO-MODS", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyNwrzgtIyiGljHYMmKfJ_79llskOVp2msvR3xn1B7Z1WF4NXcqfK9KGg&s=10", link: "https://sfl.gl/BX6a9L" },
-            { id: 3, title: "CapCut Pro", cat: "Edit", size: "299.8MB", ver: "16.4.0", dev: "ByteDance", img: "https://temanakun.com/wp-content/uploads/2024/11/Capcut-Pro.jpg", link: "https://sfl.gl/nGIXBHqG" },
-            { id: 4, title: "Hill Climb Racing", cat: "Games", size: "117MB", ver: "1.67.8", dev: "Fingersoft", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSagTaUIHMw9BZ24-ZPyviuGoP9JeJlhk2MXWv44flhZRZkEA-N3vk3xrE&s=10", link: "https://sfl.gl/WqUJK2" },
-            { id: 7, title: "Fr legend mod apk", cat: "Games", size: "140.63MB", ver: "0.4.2", dev: "Fr Legend Mod", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZwM_jHCnOxwLEm27pIQ7NFBSRFxDW0GTBtrHMeoqWehLozYZoLo-1DR6y&s=10", link: "https://sfl.gl/iSqr" },
-            { id: 8, title: "Stickwar: legacy mod", cat: "Games", size: "126.93MB", ver: "2026.1.16", dev: "Stickwar Mod Team", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7SCsabszG6mD7MJOvWMmKYLnZtZ-qkvSdd90ZMVofbw&s=10", link: "https://sfl.gl/4yT8m" },
-            { id: 9, title: "i-am-monkey-mod", cat: "Games", size: "485.26MB", ver: "1.1.2", dev: "Monkey Mod Studio", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0Ze4VrkF3BMcYD7rhuAdrDqp0Nuks9BNGFA&s", link: "https://sfl.gl/gwZus27" },
-            { id: 10, title: "Spotify mod", cat: "Entertainment", size: "130.62MB", ver: "9.1.14.864", dev: "Spotify Mod Team", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdxA0EMLltuoBhKV_osRZJDN4CghdiUNNYjXWyIAPoTF4T7n3jxirudHc&s=10", link: "https://sfl.gl/4wjTg0" },
-            { id: 11, title: "Tower war mod apk", cat: "Games", size: "143.85MB", ver: "1.26.2", dev: "SayGames Ltd", img: "https://play-lh.googleusercontent.com/7G_QBBufLp71rnqfwEGF9XnF33H5wx-mD9wxpKAJvVXxcc7YCgsT4yxpT7GF7sGprf8=w240-h480-rw", link: "https://sfl.gl/zar2" },
-            { id: 12, title: "Genshin Impact", cat: "Games", size: "601.1MB", ver: "v1.18.1", dev: "miHoYo", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQH2cUxmAof5GRpcd_YsFEX-V-eTtRiEoGKltW7P-2lKw&s=10", link: "https://sfl.gl/ecjA2L4Z" },
-            { id: 13, title: "Red Dead Redemption", cat: "Games", size: "6.26GB", ver: "Rdr netlix", dev: "Rockstar Games", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdikWJgJBBn3wvU94f96KGjObiyLOsoEAJzg&s", link: "https://www.mediafire.com/file_premium/ec3x4avokkt6ik0/Red-Dead-Redemption-NETFLIX-v1.50.60293175-unlocked-apkvision.apks/file" }
+
+            // Watch
+            { id: 17, title: "Movibox", cat: "Watch", size: "63.35MB", ver: "3.0.10.1110.03", dev: "Movibox Global", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-gUvNoMArsCAlkun4RFTAnyjtSOYrbOlj8k-tLZR0Ow&s=10", link: "https://safefileku.com/download/A9l77s0yxmaXPY9u" },
+            { id: 16, title: "Dramabox", cat: "Watch", size: "62.84MB", ver: "v5.2.1", dev: "Dramabox Studio", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7hwKuPSGVsrkPnfUC9LIXjW8jGhHs9mUwnQcp3fNCrQ&s=10", link: "https://safefileku.com/download/XdqF4zckxczhfzFe" },
+            { id: 15, title: "Melolo", cat: "Watch", size: "104.77MB", ver: "v5.1.2", dev: "NIO-MODS", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSe-08LOTY3ghKOk1WIw8OL6Tv0Sf16GuqKkqrBeweIyQ&s=10", link: "https://sfl.gl/vfijmy" },
+
+            // AI
+            { id: 1, title: "Chat-GPT", cat: "Ai", size: "21.54MB", ver: "4.0", dev: "OpenAI", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMdM9MEQ0ExL1PmInT3U5I8v63YXBEdoIT0Q&s", link: "https://sfl.gl/JXsZ" }
         ];
 
         let currentCategory = 'All';
-        let currentSort = 'Latest';
-
-        function toggleSort() {
-            currentSort = currentSort === 'Latest' ? 'AZ' : 'Latest';
-            document.getElementById('sortLabel').innerText = currentSort === 'Latest' ? 'Sort: Latest' : 'Sort: A-Z';
-            applyFiltersAndSort();
-        }
 
         function filterMods(category, btn) {
             document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
             btn.classList.add('active');
             currentCategory = category;
-            applyFiltersAndSort();
+            renderGrid();
         }
 
-        function applyFiltersAndSort() {
-            let data = currentCategory === 'All' ? [...database] : database.filter(d => d.cat === currentCategory);
+        function renderGrid() {
             const query = document.getElementById('searchBox').value.toLowerCase();
+            let data = currentCategory === 'All' ? [...database] : database.filter(d => d.cat === currentCategory);
             if (query) data = data.filter(d => d.title.toLowerCase().includes(query));
 
-            if (currentSort === 'AZ') data.sort((a, b) => a.title.localeCompare(b.title));
-            else data.sort((a, b) => b.id - a.id);
+            data.sort((a, b) => b.id - a.id);
 
             const grid = document.getElementById('grid');
             grid.innerHTML = '';
@@ -329,14 +300,13 @@
                 card.className = 'mod-card animate-pop';
                 card.style.background = `url(${item.img})`;
                 card.onclick = () => handleViewClick(item.id);
-                
                 card.innerHTML = `
                     <div class="card-fade"></div>
                     <div class="card-content">
-                        <span class="text-[7px] font-black text-white bg-blue-600/90 px-2 py-1 rounded-md uppercase tracking-[0.2em] mb-3 inline-block">PREMIUM MOD</span>
+                        <span class="text-[7px] font-black text-white bg-blue-600 px-2 py-1 rounded-md uppercase tracking-widest mb-3 inline-block">APJ VERIFIED</span>
                         <h3 class="text-xl font-black mb-1 tracking-tight text-white uppercase truncate">${item.title}</h3>
-                        <p class="text-white/60 text-[10px] mb-4">${item.cat} • v${item.ver}</p>
-                        <button class="w-full py-3.5 rounded-xl bg-white text-black font-black text-[10px] tracking-widest uppercase hover:bg-blue-600 hover:text-white transition-all shadow-2xl">VIEW DETAILS</button>
+                        <p class="text-white/60 text-[9px] mb-4">${item.cat.toUpperCase()}</p>
+                        <button class="w-full py-3 rounded-xl bg-white text-black font-black text-[10px] tracking-widest uppercase">VIEW</button>
                     </div>
                 `;
                 grid.appendChild(card);
@@ -347,70 +317,35 @@
             const item = database.find(d => d.id === id);
             document.getElementById('main-view').classList.add('hidden');
             document.getElementById('store-view').classList.remove('hidden');
+            
             document.getElementById('store-app-title').innerText = item.title;
             document.getElementById('store-app-dev').innerText = item.dev;
             document.getElementById('store-app-icon').src = item.img;
             document.getElementById('store-app-size').innerText = item.size;
             document.getElementById('store-app-ver').innerText = item.ver;
-            document.getElementById('install-btn').onclick = (e) => {
-                e.stopPropagation();
-                window.open(item.link, '_blank');
-            };
+            document.getElementById('install-btn').onclick = () => window.open(item.link, '_blank');
             
-            const textEl = document.getElementById('explanation-text');
-            textEl.innerHTML = `
-                <p class="font-bold text-white mb-2 uppercase tracking-tighter">Premium Features Unlocked:</p>
-                <ul class="list-disc pl-5 mb-6 opacity-80">
-                    <li>Full Premium Access Unlocked.</li>
-                    <li>No Advertisements or Tracking.</li>
-                    <li>Exclusive Modded Content & Features.</li>
-                    <li>Optimized performance and battery usage.</li>
-                </ul>
-                <p class="font-bold text-white mb-2 uppercase tracking-tighter">Technical Details:</p>
-                <p class="opacity-70 leading-relaxed mb-4">The ${item.title} Mod v${item.ver} has been verified for security and is compatible with Android 8.0+. Enjoy the ultimate premium experience without limitations.</p>
+            document.getElementById('explanation-text').innerHTML = `
+                <p>This ${item.cat} application has been optimized by the APJ Engine. All premium features are unlocked and ads are removed via local injection.</p>
+                <p class="opacity-80 font-bold uppercase tracking-tighter text-[10px] text-blue-400">Security Status: Verified by APJ Scan.</p>
             `;
 
-            renderHorizontalRelatedList(item.id);
-            document.getElementById('explanation-content').style.maxHeight = '0px';
-            document.getElementById('store-content').classList.add('animate-slide-up');
+            document.getElementById('store-content').classList.remove('opacity-0');
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function renderHorizontalRelatedList(excludeId) {
-            const listEl = document.getElementById('horizontal-related-list');
-            listEl.innerHTML = '';
-            
-            database.filter(mod => mod.id !== excludeId).forEach(mod => {
-                const card = document.createElement('div');
-                card.className = 'apk-list-card';
-                card.innerHTML = `
-                    <div class="flex items-center mb-6">
-                        <img src="${mod.img}" class="w-14 h-14 rounded-2xl object-cover border border-white/10 mr-4">
-                        <div class="flex-grow">
-                            <h4 class="text-[13px] font-black uppercase tracking-tight truncate w-32">${mod.title}</h4>
-                            <p class="text-[9px] font-bold text-blue-400 uppercase tracking-widest">${mod.size}</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-between mt-auto">
-                        <span class="text-[8px] font-black opacity-30 uppercase tracking-[0.2em]">${mod.cat}</span>
-                        <button onclick="handleViewClick(${mod.id})" class="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl font-black text-[9px] uppercase transition-all tracking-widest shadow-lg shadow-blue-500/10">Get</button>
-                    </div>
-                `;
-                listEl.appendChild(card);
-            });
         }
 
         function toggleExplanation() {
             const exp = document.getElementById('explanation-content');
-            exp.style.maxHeight = exp.style.maxHeight === '0px' || !exp.style.maxHeight ? '1000px' : '0px';
+            exp.style.maxHeight = exp.style.maxHeight === '0px' || !exp.style.maxHeight ? '500px' : '0px';
         }
 
         function goHome() {
             document.getElementById('store-view').classList.add('hidden');
             document.getElementById('main-view').classList.remove('hidden');
+            document.getElementById('store-content').classList.add('opacity-0');
         }
 
-        document.getElementById('searchBox').addEventListener('input', applyFiltersAndSort);
+        document.getElementById('searchBox').addEventListener('input', renderGrid);
 
         let currentSlide = 0;
         setInterval(() => {
@@ -418,9 +353,9 @@
             const s = document.getElementById('slider');
             if(s) s.style.transform = `translateX(-${currentSlide * 100}%)`;
             document.querySelectorAll('.slide').forEach((sl, i) => sl.classList.toggle('active', i === currentSlide));
-        }, 6000);
+        }, 5000);
 
-        window.onload = applyFiltersAndSort;
+        window.onload = renderGrid;
     </script>
 </body>
 </html>
