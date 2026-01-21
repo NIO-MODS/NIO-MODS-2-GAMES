@@ -365,7 +365,7 @@
         let sortMode = 'latest';
 
         function getSlug(text) {
-            return text.replace(/ /g, '-').toUpperCase();
+            return text.toString().replace(/ /g, '-').toUpperCase();
         }
 
         function toggleSortOrder() {
@@ -430,6 +430,8 @@
 
         function handleViewClick(id, push = true) {
             const item = database.find(d => d.id === id);
+            if(!item) return;
+
             document.getElementById('main-view').classList.add('hidden');
             document.getElementById('store-view').classList.remove('hidden');
             document.getElementById('store-app-title').innerText = item.title;
@@ -460,6 +462,7 @@
             const exp = document.getElementById('explanation-content');
             exp.style.maxHeight = exp.style.maxHeight === '0px' || !exp.style.maxHeight ? '500px' : '0px';
         }
+
         function goHome(push = true) {
             document.getElementById('store-view').classList.add('hidden');
             document.getElementById('main-view').classList.remove('hidden');
@@ -467,7 +470,37 @@
             if(push) window.history.pushState({}, '', '/');
         }
 
+        // Feature baru: Check URL on load and navigation
+        function handleDeepLink() {
+            const path = window.location.pathname.toUpperCase();
+            if (path && path !== '/') {
+                const parts = path.split('/').filter(p => p !== "");
+                // Format: /CATEGORY/TITLE (e.g., /TOOLS/TURBO-VPN)
+                if (parts.length >= 2) {
+                    const categorySlug = parts[0];
+                    const titleSlug = parts[1];
+                    
+                    const item = database.find(d => getSlug(d.cat) === categorySlug && getSlug(d.title) === titleSlug);
+                    if (item) {
+                        handleViewClick(item.id, false);
+                        return;
+                    }
+                }
+                
+                // Fallback: search by category only
+                if (parts.length === 1) {
+                    const categorySlug = parts[0];
+                    const category = database.find(d => getSlug(d.cat) === categorySlug)?.cat;
+                    if (category) {
+                        const btn = Array.from(document.querySelectorAll('.category-tab')).find(b => b.innerText.toUpperCase() === category.toUpperCase());
+                        filterMods(category, btn, false);
+                    }
+                }
+            }
+        }
+
         document.getElementById('searchBox').addEventListener('input', renderGrid);
+        
         let currentSlide = 0;
         setInterval(() => {
             const s = document.getElementById('slider');
@@ -478,8 +511,14 @@
             }
         }, 5000);
         
+        window.addEventListener('popstate', () => {
+            if (window.location.pathname === '/') goHome(false);
+            else handleDeepLink();
+        });
+
         window.onload = () => {
             renderGrid();
+            handleDeepLink();
         };
     </script>
 </body>
