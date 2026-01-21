@@ -398,37 +398,47 @@
         let currentCategory = 'All';
         let sortMode = 'latest';
 
-        // NEW: URL Handler Logic
-        function updateURL(item) {
-            if (item) {
-                const catSlug = item.cat.toLowerCase().replace(/ /g, '-');
-                const titleSlug = item.title.toLowerCase().replace(/ /g, '-');
-                window.history.pushState({id: item.id}, '', `/${catSlug}/${titleSlug}`);
-            } else {
-                window.history.pushState({}, '', '/');
-            }
+        // --- NEW FEATURES START ---
+        
+        function getSlug(text) {
+            return text.replace(/ /g, '-').toUpperCase();
         }
 
         function checkDeepLink() {
-            const path = window.location.pathname;
-            if (path !== '/' && path !== '') {
-                const segments = path.split('/').filter(Boolean);
-                if (segments.length >= 2) {
-                    const slug = segments[1].replace(/-/g, ' ');
-                    const item = database.find(d => d.title.toLowerCase() === slug.toLowerCase());
-                    if (item) {
-                        handleViewClick(item.id, false);
-                        return;
-                    }
+            const path = window.location.pathname.toUpperCase();
+            if (path === '/' || path === '') {
+                goHome(false);
+                return;
+            }
+
+            const segments = path.split('/').filter(Boolean);
+            
+            // Cek jika link Game: /CATEGORY/GAME
+            if (segments.length >= 2) {
+                const gameSlug = segments[1].replace(/-/g, ' ');
+                const item = database.find(d => d.title.toUpperCase() === gameSlug);
+                if (item) {
+                    handleViewClick(item.id, false);
+                    return;
                 }
             }
+
+            // Cek jika link Kategori: /CATEGORY
+            if (segments.length === 1) {
+                const catName = segments[0].replace(/-/g, ' ');
+                const availableCats = ['TOOLS', 'WAR', 'ROLE PLAY', 'CAR DRIVE', 'MUSIC', 'EDIT', 'WATCH', 'AI'];
+                const matchedCat = availableCats.find(c => c === catName);
+                
+                if (matchedCat) {
+                    const btn = Array.from(document.querySelectorAll('.category-tab'))
+                                     .find(b => b.innerText.toUpperCase() === matchedCat);
+                    filterMods(matchedCat === 'ROLE PLAY' ? 'Role Play' : matchedCat.charAt(0) + matchedCat.slice(1).toLowerCase(), btn, false);
+                    return;
+                }
+            }
+            
             goHome(false);
         }
-
-        window.onpopstate = (e) => {
-            if (e.state && e.state.id) handleViewClick(e.state.id, false);
-            else goHome(false);
-        };
 
         function toggleSortOrder() {
             const btn = document.getElementById('sortToggleBtn');
@@ -448,10 +458,16 @@
             renderGrid();
         }
 
-        function filterMods(category, btn) {
+        function filterMods(category, btn, push = true) {
             document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
-            btn.classList.add('active');
+            if(btn) btn.classList.add('active');
             currentCategory = category;
+            
+            if(push) {
+                if(category === 'All') window.history.pushState({}, '', '/');
+                else window.history.pushState({}, '', '/' + getSlug(category));
+            }
+            
             renderGrid();
         }
 
@@ -486,8 +502,6 @@
 
         function handleViewClick(id, push = true) {
             const item = database.find(d => d.id === id);
-            if (!item) return;
-            
             document.getElementById('main-view').classList.add('hidden');
             document.getElementById('store-view').classList.remove('hidden');
             document.getElementById('store-app-title').innerText = item.title;
@@ -496,7 +510,9 @@
             document.getElementById('store-app-size').innerText = item.size;
             document.getElementById('store-app-version').innerText = item.ver;
 
-            if(push) updateURL(item);
+            if(push) {
+                window.history.pushState({id: id}, '', '/' + getSlug(item.cat) + '/' + getSlug(item.title));
+            }
 
             if (item.id === 7) {
                 document.getElementById('install-btn').onclick = () => {
@@ -532,9 +548,12 @@
             document.getElementById('store-view').classList.add('hidden');
             document.getElementById('main-view').classList.remove('hidden');
             document.getElementById('store-content').classList.add('opacity-0');
-            if(push) updateURL(null);
+            if(push) window.history.pushState({}, '', '/');
             closeFRModal();
         }
+
+        window.onpopstate = () => checkDeepLink();
+
         document.getElementById('searchBox').addEventListener('input', renderGrid);
         let currentSlide = 0;
         setInterval(() => {
@@ -545,7 +564,7 @@
                 document.querySelectorAll('.slide').forEach((sl, i) => sl.classList.toggle('active', i === currentSlide));
             }
         }, 5000);
-
+        
         window.onload = () => {
             renderGrid();
             checkDeepLink();
