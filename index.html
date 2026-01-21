@@ -233,6 +233,7 @@
     </nav>
 
     <main id="main-view" class="max-w-7xl mx-auto px-6 pt-12 pb-32">
+        <!-- Hero Section -->
         <section class="relative mb-16 animate-pop h-[400px] md:h-[500px] rounded-[2.5rem] border border-white/10 shadow-2xl group">
             <div class="crown-overlay">
                 <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -246,11 +247,13 @@
 
             <div class="w-full h-full overflow-hidden rounded-[2.5rem]">
                 <div id="slider" class="slider-container">
+                    <!-- Default Slides for Empty State -->
                     <div class="slide active">
-                        <img src="https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=2070" class="slide-img" alt="Coming Soon">
+                        <div class="absolute inset-0 bg-gradient-to-br from-indigo-900 to-black"></div>
                         <div class="slide-content">
-                            <span class="px-3 py-1 bg-blue-600 rounded-lg text-[10px] font-black uppercase tracking-widest mb-4 w-fit">UPCOMING</span>
-                            <h2 class="text-4xl md:text-6xl font-black mb-4 leading-[0.9] tracking-tighter uppercase">NEW MODS <br><span class="text-blue-400">Loading Soon</span></h2>
+                            <span class="px-3 py-1 bg-blue-600 rounded-lg text-[10px] font-black uppercase tracking-widest mb-4 w-fit">WELCOME</span>
+                            <h2 class="text-4xl md:text-6xl font-black mb-4 leading-[0.9] tracking-tighter uppercase">NIO<span class="text-blue-400">MODS</span> <br>Premium Library</h2>
+                            <p class="text-white/60 text-sm max-w-md mb-8">No mods currently available. Check back soon for new updates.</p>
                         </div>
                     </div>
                 </div>
@@ -283,9 +286,11 @@
         </div>
 
         <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="col-span-full py-20 text-center opacity-40">
-                <p class="font-black uppercase tracking-widest">No Mods Available</p>
-            </div>
+            <!-- Grid will be empty by default -->
+        </div>
+
+        <div id="empty-state" class="text-center py-20 hidden">
+            <p class="text-white/20 font-black uppercase tracking-[0.5em]">No Mods Found</p>
         </div>
     </main>
 
@@ -346,7 +351,7 @@
     </div>
 
     <script>
-        // Data dikosongkan sesuai permintaan
+        // Database is now empty
         const database = [];
 
         const descriptions = {
@@ -355,7 +360,7 @@
             "War": "Battle-ready mod with enhanced stability.",
             "Car Drive": "Extreme physics engine modification.",
             "Music": "High-fidelity audio experience.",
-            "Edit": "Professional creative studio.",
+            "Edit": "Professional creative studio features.",
             "Watch": "Cinema-grade streaming experience.",
             "Ai": "Unrestricted artificial intelligence access."
         };
@@ -373,31 +378,6 @@
                 goHome(false);
                 return;
             }
-
-            const segments = path.split('/').filter(Boolean);
-            
-            if (segments.length >= 2) {
-                const gameSlug = segments[1].replace(/-/g, ' ');
-                const item = database.find(d => d.title.toUpperCase() === gameSlug);
-                if (item) {
-                    handleViewClick(item.id, false);
-                    return;
-                }
-            }
-
-            if (segments.length === 1) {
-                const catName = segments[0].replace(/-/g, ' ');
-                const availableCats = ['TOOLS', 'WAR', 'ROLE PLAY', 'CAR DRIVE', 'MUSIC', 'EDIT', 'WATCH', 'AI'];
-                const matchedCat = availableCats.find(c => c === catName);
-                
-                if (matchedCat) {
-                    const btn = Array.from(document.querySelectorAll('.category-tab'))
-                                     .find(b => b.innerText.toUpperCase() === matchedCat);
-                    filterMods(matchedCat === 'ROLE PLAY' ? 'Role Play' : matchedCat.charAt(0) + matchedCat.slice(1).toLowerCase(), btn, false);
-                    return;
-                }
-            }
-            
             goHome(false);
         }
 
@@ -436,40 +416,42 @@
             const query = document.getElementById('searchBox').value.toLowerCase();
             let data = currentCategory === 'All' ? [...database] : database.filter(d => d.cat === currentCategory);
             if (query) data = data.filter(d => d.title.toLowerCase().includes(query));
-            if (sortMode === 'latest') {
-                data.sort((a, b) => b.id - a.id);
-            } else {
-                data.sort((a, b) => a.title.localeCompare(b.title));
-            }
+            
             const grid = document.getElementById('grid');
+            const emptyState = document.getElementById('empty-state');
             grid.innerHTML = '';
 
             if (data.length === 0) {
-                grid.innerHTML = '<div class="col-span-full py-20 text-center opacity-40"><p class="font-black uppercase tracking-widest">No Mods Available</p></div>';
-                return;
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+                if (sortMode === 'latest') {
+                    data.sort((a, b) => b.id - a.id);
+                } else {
+                    data.sort((a, b) => a.title.localeCompare(b.title));
+                }
+                data.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'mod-card animate-pop';
+                    card.style.background = `url(${item.img})`;
+                    card.onclick = () => handleViewClick(item.id);
+                    card.innerHTML = `
+                        <div class="card-fade"></div>
+                        <div class="card-content text-left">
+                            <span class="text-[7px] font-black text-white bg-blue-600 px-2 py-1 rounded-md uppercase tracking-widest mb-3 inline-block">APJ VERIFIED</span>
+                            <h3 class="text-xl font-black mb-1 tracking-tight text-white uppercase truncate">${item.title}</h3>
+                            <p class="text-white/60 text-[9px] mb-4">${item.cat.toUpperCase()}</p>
+                            <button class="w-full py-3 rounded-xl bg-white text-black font-black text-[10px] tracking-widest uppercase shadow-lg hover:scale-[1.02] transition-transform">VIEW</button>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
             }
-
-            data.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'mod-card animate-pop';
-                card.style.background = `url(${item.img})`;
-                card.onclick = () => handleViewClick(item.id);
-                card.innerHTML = `
-                    <div class="card-fade"></div>
-                    <div class="card-content text-left">
-                        <span class="text-[7px] font-black text-white bg-blue-600 px-2 py-1 rounded-md uppercase tracking-widest mb-3 inline-block">APJ VERIFIED</span>
-                        <h3 class="text-xl font-black mb-1 tracking-tight text-white uppercase truncate">${item.title}</h3>
-                        <p class="text-white/60 text-[9px] mb-4">${item.cat.toUpperCase()}</p>
-                        <button class="w-full py-3 rounded-xl bg-white text-black font-black text-[10px] tracking-widest uppercase shadow-lg hover:scale-[1.02] transition-transform">VIEW</button>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
         }
 
         function handleViewClick(id, push = true) {
             const item = database.find(d => d.id === id);
-            if(!item) return;
+            if (!item) return;
 
             document.getElementById('main-view').classList.add('hidden');
             document.getElementById('store-view').classList.remove('hidden');
@@ -511,7 +493,6 @@
         }
 
         window.onpopstate = () => checkDeepLink();
-
         document.getElementById('searchBox').addEventListener('input', renderGrid);
         
         window.onload = () => {
