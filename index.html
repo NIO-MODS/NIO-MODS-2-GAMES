@@ -104,8 +104,6 @@
             backdrop-filter: blur(10px);
         }
 
-        .sort-toggle:active { transform: scale(0.95); }
-
         .sort-toggle.latest-mode {
             border-color: var(--neon-blue);
             box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
@@ -194,11 +192,6 @@
             transform: scale(1.05) translateY(-2px);
             box-shadow: 0 8px 25px rgba(0, 210, 255, 0.5);
         }
-
-        .fr-modal-backdrop {
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(10px);
-        }
     </style>
 </head>
 <body class="antialiased">
@@ -223,7 +216,6 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
             </div>
-            
             <a href="https://ngl.link/niomods1" target="_blank" class="sand-btn p-2.5 rounded-2xl flex items-center justify-center min-w-[44px]">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
@@ -233,39 +225,28 @@
     </nav>
 
     <main id="main-view" class="max-w-7xl mx-auto px-6 pt-12 pb-32">
+        <!-- Hero Slider (Real Gangster Spotlight) -->
         <section class="relative mb-16 animate-pop h-[400px] md:h-[500px] rounded-[2.5rem] border border-white/10 shadow-2xl group">
             <div class="crown-overlay">
                 <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5 16L3 5L8.5 10L12 4L15.5 10L21 5L19 16H5Z" fill="#FFD700" stroke="#FFA500" stroke-width="1" stroke-linejoin="round"/>
-                    <circle cx="12" cy="4" r="1.5" fill="#FFF"/>
-                    <circle cx="3" cy="5" r="1.5" fill="#FFF"/>
-                    <circle cx="21" cy="5" r="1.5" fill="#FFF"/>
-                    <rect x="5" y="16" width="14" height="3" rx="1" fill="#FFA500"/>
                 </svg>
             </div>
-
             <div class="w-full h-full overflow-hidden rounded-[2.5rem]">
                 <div id="slider" class="slider-container">
                     <div class="slide active">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-gUvNoMArsCAlkun4RFTAnyjtSOYrbOlj8k-tLZR0Ow&s=10" class="slide-img" alt="Movibox">
+                        <img src="https://play-lh.googleusercontent.com/bzNJRFhrv3JIaqXit-rhHzIv3SNdgbD-wUMnN32ngwpHXp2fCZYLA41QfSxK0h85zw=w480-h960-rw" class="slide-img" alt="Real Gangster Spotlight">
                         <div class="slide-content">
-                            <span class="px-3 py-1 bg-purple-600 rounded-lg text-[10px] font-black uppercase tracking-widest mb-4 w-fit">NEW UPDATE</span>
-                            <h2 class="text-4xl md:text-6xl font-black mb-4 leading-[0.9] tracking-tighter uppercase">MOVIBOX <br><span class="text-purple-400">Stream Master</span></h2>
-                            <button onclick="handleViewClick(17)" class="w-fit bg-white text-black px-10 py-4 rounded-xl font-black text-sm tracking-widest hover:bg-purple-600 hover:text-white transition-all transform active:scale-95 uppercase">Get Mod</button>
-                        </div>
-                    </div>
-                    <div class="slide">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7hwKuPSGVsrkPnfUC9LIXjW8jGhHs9mUwnQcp3fNCrQ&s=10" class="slide-img" alt="Dramabox">
-                        <div class="slide-content">
-                            <span class="px-3 py-1 bg-red-600 rounded-lg text-[10px] font-black uppercase tracking-widest mb-4 w-fit">CINEMA ELITE</span>
-                            <h2 class="text-4xl md:text-6xl font-black mb-4 leading-[0.9] tracking-tighter uppercase">DRAMABOX <br><span class="text-red-400">Premium Content</span></h2>
-                            <button onclick="handleViewClick(16)" class="w-fit bg-white text-black px-10 py-4 rounded-xl font-black text-sm tracking-widest hover:bg-red-600 hover:text-white transition-all transform active:scale-95 uppercase">Get Mod</button>
+                            <span class="px-3 py-1 bg-red-600 rounded-lg text-[10px] font-black uppercase tracking-widest mb-4 w-fit">TRENDING NOW</span>
+                            <h2 class="text-4xl md:text-6xl font-black mb-4 leading-[0.9] tracking-tighter uppercase">REAL GANGSTER <br><span class="text-red-400">Crime City Mod</span></h2>
+                            <button onclick="handleViewClick(2)" class="w-fit bg-white text-black px-10 py-4 rounded-xl font-black text-sm tracking-widest hover:bg-red-600 hover:text-white transition-all transform active:scale-95 uppercase">Get Mod</button>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- Filters -->
         <div class="flex flex-col gap-6 mb-12">
             <div class="flex justify-center sm:justify-start">
                 <button id="sortToggleBtn" onclick="toggleSortOrder()" class="sort-toggle latest-mode flex items-center gap-4 px-8 py-4 rounded-2xl min-w-[160px] group">
@@ -280,20 +261,17 @@
 
             <div class="flex items-center gap-4 overflow-x-auto pb-4 no-scrollbar">
                 <button onclick="filterMods('All', this)" class="category-tab active bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">All</button>
+                <button onclick="filterMods('Game', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Games</button>
+                <button onclick="filterMods('Entertainment', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Entertainment</button>
                 <button onclick="filterMods('Tools', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Tools</button>
-                <button onclick="filterMods('War', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">War</button>
-                <button onclick="filterMods('Role Play', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Role Play</button>
-                <button onclick="filterMods('Car Drive', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Car Drive</button>
                 <button onclick="filterMods('Music', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Music</button>
-                <button onclick="filterMods('Edit', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Edit</button>
-                <button onclick="filterMods('Watch', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Watch</button>
-                <button onclick="filterMods('Ai', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Ai</button>
             </div>
         </div>
 
         <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
     </main>
 
+    <!-- App Detail View -->
     <div id="store-view" class="hidden fixed inset-0 z-50 bg-[#020617] overflow-y-auto pt-24 pb-20">
         <div id="store-content" class="max-w-4xl mx-auto px-6 opacity-0 transition-opacity duration-500">
             <button onclick="goHome()" class="flex items-center gap-2 text-white/50 hover:text-white mb-10 group">
@@ -331,114 +309,89 @@
         </div>
     </div>
 
-    <div id="fr-selection-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-6 fr-modal-backdrop">
-        <div class="bg-[#0f172a] border border-white/10 w-full max-w-sm rounded-[3rem] p-8 md:p-10 text-center animate-pop shadow-2xl relative overflow-hidden">
-            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500"></div>
-            <h3 class="text-2xl font-black mb-1 uppercase tracking-tighter">Choose Edition</h3>
-            <p class="text-white/40 text-[9px] font-bold uppercase tracking-widest mb-8">FR LEGEND MOD SELECTION</p>
-            <div class="space-y-4">
-                <button onclick="execDownloadFR('classic')" class="w-full bg-white/5 hover:bg-white/10 border border-white/5 p-6 rounded-[2rem] transition-all group">
-                    <span class="block font-black text-sm uppercase tracking-widest mb-1 group-hover:text-blue-400">Classic Mod</span>
-                    <span class="block text-[8px] opacity-40 uppercase font-bold">Standard Modded Features</span>
-                </button>
-                <button onclick="execDownloadFR('modpack')" class="w-full bg-blue-600 hover:bg-blue-500 p-6 rounded-[2rem] shadow-xl transition-all group">
-                    <span class="block font-black text-sm uppercase tracking-widest mb-1">Modpack Ver</span>
-                    <span class="block text-[8px] text-white/70 uppercase font-bold tracking-widest">Enhanced Map & Performance</span>
-                </button>
-                <button onclick="closeFRModal()" class="pt-4 text-[9px] font-black text-white/20 hover:text-white uppercase tracking-[0.4em] transition-colors">Cancel</button>
-            </div>
-        </div>
-    </div>
-
     <script>
         const database = [
-            { id: 34, title: "GTA 5 Mobile", cat: "Role Play", size: "221.32MB", ver: "5", dev: "Rockstar Games", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcjgQib3DzVw3tE4QHQIBnV_pDGVAhZWOHhvYL28FKHg&s=10", link: "https://safefileku.com/download/ePslVPei6sl3ucgk" },
-            { id: 33, title: "Minecraft", cat: "Role Play", size: "875.49MB", ver: "1.21.132.1", dev: "Mojang", img: "https://play-lh.googleusercontent.com/27O5tpaYE82W6m30rJ_MX3-UvshlDM6O8oXDxb6GseYW2T7P8UNT19727MGmz-0q3w", link: "https://safefileku.com/download/UHgUvUhy6so8G5bD" },
-            { id: 32, title: "Ngl-mod", cat: "Tools", size: "171.97MB", ver: "2.3.55", dev: "NGL Mod Studio", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQik2PmL9FW7SLGBzzymNtgO-cz2HGp_jTZ_xvk3jy65w&s=10", link: "https://safefileku.com/download/ow6CpU2I7Fzlw1NQ" },
-            { id: 31, title: "Truck Masters India", cat: "Car Drive", size: "518.54MB", ver: "2025.5.7", dev: "RedFox Games", img: "https://play-lh.googleusercontent.com/nmAKBLjInkBBVtyZW7ChitHDd4repJoAhcCnsTLXwhaTreJhIEU87aPlw7Q5qx1HjVFN=w240-h480-rw", link: "https://safefileku.com/download/BHKJVeQU0sN6tVC7" },
-            { id: 30, title: "Tekken 6", cat: "War", size: "36.62MB", ver: "6", dev: "Bandai Namco", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdd-c4rk3nzuu8F-KL2qbV5sPSzIoeWMN7-g7ZOD8hNgEKf8nz9267PlY&s=10", link: "https://safefileku.com/download/U7vaxlOh8I9Iz1c3" },
-            { id: 29, title: "Kick the Buddy: Forever", cat: "Role Play", size: "123.20MB", ver: "2.0.22", dev: "Playgendary Limited", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCCXjRbkyqzTrqIclJsaehWjwo4EOQLfuO9S4uN_yBtg&s=10", link: "https://safefileku.com/download/GP4Bz5y07LfVMeXl" },
-            { id: 28, title: "GFX Tool", cat: "Tools", size: "4.82MB", ver: "10.3.0", dev: "tsoml", img: "https://img.utdstc.com/icon/872/672/87267271e1a2e1c89feb9c759aa1622917d7fbc6f3d0029a4d5216dc535d5146:200", link: "https://safefileku.com/download/KUBAwSdATFYUYnDx" },
-            { id: 27, title: "Snap Master VPN", cat: "Tools", size: "18.5MB", ver: "8.0.5", dev: "Lemon Clove", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOdMwJHJbEMCDC8UZb_cAZOatrrEDpHXGuz2M-MyHyJ3-sZ012t4GXEv4e&s=1", link: "https://safefileku.com/download/KUBAwSdATFYUYnDx" },
-            { id: 26, title: "Indian Bikes Driving", cat: "Car Drive", size: "153.84MB", ver: "79", dev: "Rohit Gaming Studio", img: "https://img.utdstc.com/icon/d45/de4/d45de47f27a8471894c3465c1cd8516cc8aea333bf7a27b1291cb9ecca45172f:200", link: "https://safefileku.com/download/jafABpTi798aISEk" },
-            { id: 25, title: "Clean Master", cat: "Tools", size: "22.38MB", ver: "7.5.3", dev: "Cheetah Mobile", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2PmLZ5LDQzdt1phUaepNhTII_u3jkyZbOC_9sOfLXCQ&s=10", link: "https://safefileku.com/download/YT8mYxHUsb2o6oDM" },
-            { id: 24, title: "Turbo VPN", cat: "Tools", size: "43.25MB", ver: "4.2.9.3", dev: "Innovative Connecting", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4wzz1Krjdf8aRfg4nSSRIVJWKyWrtqD9eBgGD9GVrbLLMMcsR04GVZ4N0&s=10", link: "https://safefileku.com/download/SCp0BdeyBWCkFa5q" },
-            { id: 23, title: "PPSSPP Gold", cat: "Tools", size: "29.24MB", ver: "1.19.3", dev: "Henrik Rydgård", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKhCruDSIa522uJOa4vg353z2ZN32p4Lt8XTIn5ZUqENgeoAyJUKGj264&s=10", link: "https://safefileku.com/download/4qE6KG9KuZpQobNw" },
-            { id: 22, title: "War Machines", cat: "War", size: "240.34MB", ver: "8.62.0", dev: "Fun Games For Free", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0trXfzi33Uw2dCqhpRo7ZANSW5AzvBqaDju9wlvN_lB8ephyFm7Zm0ww1&s=10", link: "https://safefileku.com/download/bA78xXBordGO24xX" },
-            { id: 21, title: "Real Gangster", cat: "Role Play", size: "153.23MB", ver: "6.2.9", dev: "Naxeex Action", img: "https://play-lh.googleusercontent.com/bzNJRFhrv3JIaqXit-rhHzIv3SNdgbD-wUMnN32ngwpHXp2fCZYLA41QfSxK0h85zw", link: "https://safefileku.com/download/R2wIlxO6q0W86EIS" },
-            { id: 14, title: "Free Fire", cat: "War", size: "486.97MB", ver: "1.120.1", dev: "Garena", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSS7Dy6s4Z2nCHNQegvlZsu4aiNcx9KyM7fpNWZmvxJXg&s=10", link: "https://sfl.gl/2QQ9cK" },
-            { id: 11, title: "Tower War Mod APK", cat: "War", size: "143.85MB", ver: "1.26.2", dev: "SayGames Ltd", img: "https://play-lh.googleusercontent.com/7G_QBBufLp71rnqfwEGF9XnF33H5wx-mD9wxpKAJvVXxcc7YCgsT4yxpT7GF7sGprf8=w240-h480-rw", link: "https://sfl.gl/zar2" },
-            { id: 8, title: "Stickwar: Legacy", cat: "War", size: "126.93MB", ver: "2026.1.16", dev: "Max Games Studios", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7SCsabszG6mD7MJOvWMmKYLnZtZ-qkvSdd90ZMVofbw&s=10", link: "https://sfl.gl/4yT8m" },
-            { id: 13, title: "Red Dead Redemption", cat: "Role Play", size: "6.26GB", ver: "Netflix Edition", dev: "Rockstar Games", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdikWJgJBBn3wvU94f96KGjObiyLOsoEAJzg&s", link: "https://www.mediafire.com/file_premium/ec3x4avokkt6ik0/Red-Dead-Redemption-NETFLIX-v1.50.60293175-unlocked-apkvision.apks/file" },
-            { id: 12, title: "Genshin Impact", cat: "Role Play", size: "601.1MB", ver: "v1.18.1", dev: "miHoYo", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQH2cUxmAof5GRpcd_YsFEX-V-eTtRiEoGKltW7P-2lKw&s=10", link: "https://sfl.gl/ecjA2L4Z" },
-            { id: 9, title: "i-am-monkey-mod", cat: "Role Play", size: "485.26MB", ver: "1.1.2", dev: "Monkey Mod Studio", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0Ze4VrkF3BMcYD7rhuAdrDqp0Nuks9BNGFA&s", link: "https://sfl.gl/gwZus27" },
-            { id: 18, title: "Rally-one", cat: "Car Drive", size: "169.64MB", ver: "1.6.6", dev: "VO DIGITAL", img: "https://img.utdstc.com/icon/03e/8e4/03e8e4950ba8409d020cf4d695cc78a0bc83b6fdafca999c7f5c5a0b5de8b6b2:200", link: "https://safefileku.com/download/gZnFdM1ATl5n4Ezq" },
-            { id: 7, title: "Fr Legend Mod APK", cat: "Car Drive", size: "140.63MB", ver: "0.4.2", dev: "Fr Legend Mod", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZwM_jHCnOxwLEm27pIQ7NFBSRFxDW0GTBtrHMeoqWehLozYZoLo-1DR6y&s=10", link: "https://sfl.gl/iSqr" },
-            { id: 4, title: "Hill Climb Racing", cat: "Car Drive", size: "117MB", ver: "1.67.8", dev: "Fingersoft", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSagTaUIHMw9BZ24-ZPyviuGoP9JeJlhk2MXWv44flhZRZkEA-N3vk3xrE&s=10", link: "https://sfl.gl/WqUJK2" },
-            { id: 10, title: "Spotify", cat: "Music", size: "130.62MB", ver: "9.1.14.864", dev: "Spotify Mod", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdxA0EMLltuoBhKV_osRZJDN4CghdiUNNYjXWyIAPoTF4T7n3jxirudHc&s=10", link: "https://sfl.gl/4wjTg0" },
-            { id: 3, title: "CapCut", cat: "Edit", size: "299.8MB", ver: "16.4.0", dev: "ByteDance", img: "https://temanakun.com/wp-content/uploads/2024/11/Capcut-Pro.jpg", link: "https://sfl.gl/nGIXBHqG" },
-            { id: 2, title: "Alight Motion", cat: "Edit", size: "106.55MB", ver: "5.0.272", dev: "NIO-MODS", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyNwrzgtIyiGljHYMmKfJ_79llskOVp2msvR3xn1B7Z1WF4NXcqfK9KGg&s=10", link: "https://sfl.gl/BX6a9L" },
-            { id: 17, title: "Movibox", cat: "Watch", size: "63.35MB", ver: "3.0.10.1110.03", dev: "Movibox Global", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-gUvNoMArsCAlkun4RFTAnyjtSOYrbOlj8k-tLZR0Ow&s=10", link: "https://safefileku.com/download/A9l77s0yxmaXPY9u" },
-            { id: 16, title: "Dramabox", cat: "Watch", size: "62.84MB", ver: "v5.2.1", dev: "Dramabox Studio", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7hwKuPSGVsrkPnfUC9LIXjW8jGhHs9mUwnQcp3fNCrQ&s=10", link: "https://safefileku.com/download/XdqF4zckxczhfzFe" },
-            { id: 15, title: "Melolo", cat: "Watch", size: "104.77MB", ver: "v5.1.2", dev: "NIO-MODS", img: "https://down-id.img.susercontent.com/file/id-11134207-81ztc-meog44jgu9kz20", link: "https://sfl.gl/vfijmy" },
-            { id: 1, title: "Chat-GPT", cat: "Ai", size: "21.54MB", ver: "4.0", dev: "OpenAI", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMdM9MEQ0ExL1PmInT3U5I8v63YXBEdoIT0Q&s", link: "https://sfl.gl/JXsZ" }
+            { 
+                id: 1, 
+                title: "Spotify", 
+                cat: "Music", 
+                size: "79.38MB", 
+                ver: "9.1.12.226", 
+                dev: "Spotify AB", 
+                img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKLxpjtgpqngI7ftJ-h5mA1cYHYdZYyqowxNTXNcASnQ&s=10", 
+                link: "https://safefileku.com/download/RHUifsun7YwZlw7n" 
+            },
+            {
+                id: 2,
+                title: "Real Gangster",
+                cat: "Game",
+                size: "153.23MB",
+                ver: "6.2.9",
+                dev: "Naxeex Action",
+                img: "https://play-lh.googleusercontent.com/bzNJRFhrv3JIaqXit-rhHzIv3SNdgbD-wUMnN32ngwpHXp2fCZYLA41QfSxK0h85zw=w480-h960-rw",
+                link: "https://safefileku.com/download/R2wIlxO6q0W86EIS"
+            },
+            {
+                id: 3,
+                title: "Hunter Assassin",
+                cat: "Game",
+                size: "124.83MB",
+                ver: "2.035",
+                dev: "Ruby Game Studio",
+                img: "https://play-lh.googleusercontent.com/PTxkeud-aHNGqo85reN70CUWs5DF0HTKNMIbM7lrxS1WdTD-G2X8X6szmD4CGlI7wg=w480-h960-rw",
+                link: "https://safefileku.com/download/uediIGnyKLsYdUWo"
+            },
+            {
+                id: 4,
+                title: "Rally One",
+                cat: "Game",
+                size: "169.64MB",
+                ver: "1.66",
+                dev: "VO Digital",
+                img: "https://play-lh.googleusercontent.com/BbnLBsGvsiTfrDzdc9ifnA3hY_YsTa7o1JJxeI2zGOhKiL4eDA77XfF__jB2jZLngYU=w480-h960-rw",
+                link: "https://safefileku.com/download/gZnFdM1ATl5n4Ezq"
+            },
+            {
+                id: 5,
+                title: "Magic Tiles 3",
+                cat: "Game",
+                size: "248.82MB",
+                ver: "12.124.102",
+                dev: "Amanotes",
+                img: "https://play-lh.googleusercontent.com/6VJeKzoRjPx0jTp_9d0E7EKlTmQXISRnWJxKxO__dPRIif9C4RuJxwJQQxSuug0j2qU=w480-h960-rw",
+                link: "https://safefileku.com/download/WwSsGywRUCEt9dAr"
+            },
+            {
+                id: 6,
+                title: "Movibox",
+                cat: "Entertainment",
+                size: "63.35MB",
+                ver: "3.0.10.1110.03",
+                dev: "Movibox Team",
+                img: "https://play-lh.googleusercontent.com/B1d_EecOAo2QEZFMKsCSo4U-M0ukZcwYF7Q6-60UDSGL4RTYKePbg5f8GrojXEi24Tvm=w480-h960-rw",
+                link: "https://safefileku.com/download/A9l77s0yxmaXPY9u"
+            },
+            {
+                id: 7,
+                title: "Dramabox",
+                cat: "Entertainment",
+                size: "62.84MB",
+                ver: "5.2.1",
+                dev: "StoryMatrix",
+                img: "https://play-lh.googleusercontent.com/dYAF42EhNGgGhC7nLHNSZkWs11W5Dv0mRWZBv6IgLDTh3l8eolsjeAVGg-HVHt9YWyA=w480-h960-rw",
+                link: "https://safefileku.com/download/XdqF4zckxczhfzFe"
+            }
         ];
 
         const descriptions = {
-            "Role Play": "Open-world adventure experience with all items unlocked. This edition features high-resolution textures, god-mode toggles, and infinite resources to build or explore without limits.",
-            "Tools": "Pro utility suite with premium features bypassed. Enhanced performance algorithms ensure maximum efficiency for your device while removing tracking and unnecessary telemetry.",
-            "War": "Battle-ready mod with enhanced aim stability, unlocked character skins, and infinite ammunition. Perfected for high-performance combat simulations and competitive ranking.",
-            "Car Drive": "Extreme physics engine modification with all supercars unlocked. Includes custom tuning kits, nitro boosts, and high-fidelity environment rendering for the ultimate racing feel.",
-            "Music": "High-fidelity audio experience with ad-blocking and unlimited skips. Download your favorite playlists in 320kbps and enjoy a seamless, uninterrupted interface.",
-            "Edit": "Professional creative studio with all transitions, fonts, and premium effects unlocked. Export in 4K resolution without watermarks and utilize advanced keyframe animations.",
-            "Watch": "Cinema-grade streaming experience. Access premium content catalogs without subscription limits. Enjoy 4K HDR playback and offline downloading for an ad-free viewing session.",
-            "Ai": "Unrestricted artificial intelligence access. Experience the full capabilities of advanced neural networks with increased response speed and pro-tier model availability."
+            "Music": "Enjoy premium music streaming with no ads, unlimited skips, and high-quality audio enabled. This mod bypasses subscription restrictions.",
+            "Game": "Experience unlimited resources, unlocked levels, and premium features in this modded game version. Verified for smooth performance.",
+            "Entertainment": "Unlock premium content, ad-free streaming, and exclusive features for a superior entertainment experience.",
+            "Tools": "Access all pro features and bypass payment walls in this utility mod. Optimized for efficiency and speed."
         };
 
         let currentCategory = 'All';
         let sortMode = 'latest';
-
-        // --- NEW FEATURES START ---
-        
-        function getSlug(text) {
-            return text.replace(/ /g, '-').toUpperCase();
-        }
-
-        function checkDeepLink() {
-            const path = window.location.pathname.toUpperCase();
-            if (path === '/' || path === '') {
-                goHome(false);
-                return;
-            }
-
-            const segments = path.split('/').filter(Boolean);
-            
-            // Cek jika link Game: /CATEGORY/GAME
-            if (segments.length >= 2) {
-                const gameSlug = segments[1].replace(/-/g, ' ');
-                const item = database.find(d => d.title.toUpperCase() === gameSlug);
-                if (item) {
-                    handleViewClick(item.id, false);
-                    return;
-                }
-            }
-
-            // Cek jika link Kategori: /CATEGORY
-            if (segments.length === 1) {
-                const catName = segments[0].replace(/-/g, ' ');
-                const availableCats = ['TOOLS', 'WAR', 'ROLE PLAY', 'CAR DRIVE', 'MUSIC', 'EDIT', 'WATCH', 'AI'];
-                const matchedCat = availableCats.find(c => c === catName);
-                
-                if (matchedCat) {
-                    const btn = Array.from(document.querySelectorAll('.category-tab'))
-                                     .find(b => b.innerText.toUpperCase() === matchedCat);
-                    filterMods(matchedCat === 'ROLE PLAY' ? 'Role Play' : matchedCat.charAt(0) + matchedCat.slice(1).toLowerCase(), btn, false);
-                    return;
-                }
-            }
-            
-            goHome(false);
-        }
 
         function toggleSortOrder() {
             const btn = document.getElementById('sortToggleBtn');
@@ -458,16 +411,10 @@
             renderGrid();
         }
 
-        function filterMods(category, btn, push = true) {
+        function filterMods(category, btn) {
             document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
             if(btn) btn.classList.add('active');
             currentCategory = category;
-            
-            if(push) {
-                if(category === 'All') window.history.pushState({}, '', '/');
-                else window.history.pushState({}, '', '/' + getSlug(category));
-            }
-            
             renderGrid();
         }
 
@@ -475,13 +422,17 @@
             const query = document.getElementById('searchBox').value.toLowerCase();
             let data = currentCategory === 'All' ? [...database] : database.filter(d => d.cat === currentCategory);
             if (query) data = data.filter(d => d.title.toLowerCase().includes(query));
-            if (sortMode === 'latest') {
-                data.sort((a, b) => b.id - a.id);
-            } else {
-                data.sort((a, b) => a.title.localeCompare(b.title));
-            }
+            
+            if (sortMode === 'az') data.sort((a, b) => a.title.localeCompare(b.title));
+            else data.sort((a, b) => b.id - a.id);
+
             const grid = document.getElementById('grid');
             grid.innerHTML = '';
+            
+            if(data.length === 0) {
+                grid.innerHTML = '<div class="col-span-full py-20 text-center opacity-30 uppercase font-black tracking-widest">No Mods Found</div>';
+            }
+
             data.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'mod-card animate-pop';
@@ -500,7 +451,7 @@
             });
         }
 
-        function handleViewClick(id, push = true) {
+        function handleViewClick(id) {
             const item = database.find(d => d.id === id);
             document.getElementById('main-view').classList.add('hidden');
             document.getElementById('store-view').classList.remove('hidden');
@@ -510,19 +461,9 @@
             document.getElementById('store-app-size').innerText = item.size;
             document.getElementById('store-app-version').innerText = item.ver;
 
-            if(push) {
-                window.history.pushState({id: id}, '', '/' + getSlug(item.cat) + '/' + getSlug(item.title));
-            }
-
-            if (item.id === 7) {
-                document.getElementById('install-btn').onclick = () => {
-                    document.getElementById('fr-selection-modal').classList.remove('hidden');
-                };
-            } else {
-                document.getElementById('install-btn').onclick = () => window.open(item.link, '_blank');
-            }
+            document.getElementById('install-btn').onclick = () => window.open(item.link, '_blank');
             
-            const desc = descriptions[item.cat] || "Aplikasi premium ini telah dioptimalkan untuk performa maksimal dengan semua fitur berbayar yang terbuka secara gratis.";
+            const desc = descriptions[item.cat] || "Premium unlocked version with full access features.";
             document.getElementById('explanation-text').innerHTML = `
                 <p>${desc}</p>
                 <div class="pt-2">
@@ -534,41 +475,21 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function closeFRModal() { document.getElementById('fr-selection-modal').classList.add('hidden'); }
-        function execDownloadFR(type) {
-            if (type === 'classic') { window.open('https://sfl.gl/iSqr', '_blank'); } 
-            else { window.open('https://safefileku.com/download/OCjFRcNbtNrhVd7M', '_blank'); }
-            closeFRModal();
-        }
         function toggleExplanation() {
-            const exp = document.getElementById('explanation-content');
-            exp.style.maxHeight = exp.style.maxHeight === '0px' || !exp.style.maxHeight ? '500px' : '0px';
+            const content = document.getElementById('explanation-content');
+            content.style.maxHeight = content.style.maxHeight === '0px' || !content.style.maxHeight ? '500px' : '0px';
         }
-        function goHome(push = true) {
+
+        function goHome() {
             document.getElementById('store-view').classList.add('hidden');
             document.getElementById('main-view').classList.remove('hidden');
             document.getElementById('store-content').classList.add('opacity-0');
-            if(push) window.history.pushState({}, '', '/');
-            closeFRModal();
+            document.getElementById('explanation-content').style.maxHeight = '0px';
         }
 
-        window.onpopstate = () => checkDeepLink();
-
         document.getElementById('searchBox').addEventListener('input', renderGrid);
-        let currentSlide = 0;
-        setInterval(() => {
-            const s = document.getElementById('slider');
-            if(s) {
-                currentSlide = (currentSlide + 1) % 2;
-                s.style.transform = `translateX(-${currentSlide * 100}%)`;
-                document.querySelectorAll('.slide').forEach((sl, i) => sl.classList.toggle('active', i === currentSlide));
-            }
-        }, 5000);
-        
-        window.onload = () => {
-            renderGrid();
-            checkDeepLink();
-        };
+        window.onload = () => renderGrid();
     </script>
 </body>
 </html>
+
