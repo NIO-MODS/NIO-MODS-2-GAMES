@@ -1,574 +1,101 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NIO-mod | Organized Premium Mods</title>
+    <title>NIO MODS</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Uncut+Sans:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --neon-purple: #bc13fe;
-            --neon-blue: #00d2ff;
-            --deep-space: #020617;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.08);
-        }
-
-        body {
-            font-family: 'Uncut Sans', sans-serif;
-            background-color: var(--deep-space);
-            color: #fff;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
-        }
-
-        .mesh-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: 
-                radial-gradient(circle at 10% 10%, rgba(188, 19, 254, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 90% 90%, rgba(0, 210, 255, 0.1) 0%, transparent 40%);
-            z-index: -1;
-        }
-
-        .mod-card {
-            background-size: cover !important;
-            background-position: center !important;
-            background-repeat: no-repeat !important;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 2.5rem;
-            height: 340px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 1.75rem;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            cursor: pointer;
-        }
-
-        .card-fade {
-            position: absolute;
-            inset: -1px; 
-            width: calc(100% + 2px);
-            height: calc(100% + 2px);
-            background: linear-gradient(to top, 
-                rgba(2, 6, 23, 1) 0%, 
-                rgba(2, 6, 23, 0.98) 25%, 
-                rgba(2, 6, 23, 0.6) 60%, 
-                rgba(2, 6, 23, 0.2) 100%);
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .mod-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            border-color: var(--neon-blue);
-            box-shadow: 0 25px 50px -12px rgba(0, 210, 255, 0.3);
-        }
-
-        .card-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .category-tab {
-            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .category-tab:hover {
-            transform: translateY(-2px);
-            background: rgba(255,255,255,0.08);
-            border-color: rgba(255,255,255,0.2);
-        }
-
-        .category-tab.active {
-            background: white !important;
-            color: black !important;
-            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.15);
-            transform: scale(1.05);
-        }
-
-        .sort-toggle {
-            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
-            border: 1px solid rgba(255,255,255,0.1);
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            backdrop-filter: blur(10px);
-        }
-
-        .sort-toggle:active { transform: scale(0.95); }
-
-        .sort-toggle.latest-mode {
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
-        }
-
-        .sort-toggle.latest-mode span {
-            color: var(--neon-blue);
-            text-shadow: 0 0 8px rgba(0, 210, 255, 0.5);
-        }
-
-        .hidden { display: none; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        
-        .slider-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        .slide {
-            min-width: 100%;
-            height: 100%;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .slide-img {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: brightness(0.4);
-            transform: scale(1.1);
-            transition: transform 8s linear;
-        }
-
-        .slide.active .slide-img { transform: scale(1); }
-
-        .slide-content {
-            position: relative;
-            z-index: 10;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 0 10%;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease 0.3s;
-        }
-
-        .slide.active .slide-content { opacity: 1; transform: translateY(0); }
-
-        @keyframes pop { 0% { transform: scale(0.96); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-        .animate-pop { animation: pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
-
-        .apj-badge {
-            background: linear-gradient(45deg, #00d2ff, #bc13fe);
-            animation: apj-pulse 2s infinite;
-        }
-        @keyframes apj-pulse {
-            0% { box-shadow: 0 0 0 0 rgba(0, 210, 255, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(0, 210, 255, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 210, 255, 0); }
-        }
-
-        .crown-overlay {
-            position: absolute;
-            top: -50px; 
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 50;
-            filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.5));
-            pointer-events: none;
-        }
-
-        .sand-btn {
-            background: linear-gradient(135deg, #00d2ff 0%, #0080ff 100%);
-            box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .sand-btn:hover {
-            transform: scale(1.05) translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 210, 255, 0.5);
-        }
-
-        .fr-modal-backdrop {
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(10px);
-        }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
-<body class="antialiased">
-    <div class="mesh-bg"></div>
-
-    <nav class="flex items-center justify-between px-6 md:px-12 py-5 sticky top-0 z-[60] backdrop-blur-2xl bg-black/40 border-b border-white/5">
-        <div class="flex items-center space-x-4 cursor-pointer" onclick="goHome()">
-            <div class="w-10 h-10 bg-gradient-to-br from-[#bc13fe] to-[#00d2ff] rounded-xl flex items-center justify-center shadow-xl">
-                <span class="font-black text-xl italic text-black">N</span>
-            </div>
-            <div class="flex flex-col text-left">
-                <span class="text-xl font-black tracking-tighter uppercase hidden sm:block leading-none">NIO<span class="text-blue-500">-</span>mod</span>
-                <span class="text-[8px] font-black tracking-[0.3em] text-blue-400 mt-1 hidden sm:block uppercase">Verified by APJ</span>
-            </div>
+<body class="bg-gray-900 text-white font-sans">
+    <div id="app" class="max-w-md mx-auto p-4 min-h-screen flex flex-col">
         </div>
-
-        <div class="relative group max-w-md w-full mx-4 flex items-center gap-4">
-            <div class="relative w-full">
-                <input type="text" id="searchBox" placeholder="Search mods..." 
-                    class="w-full bg-white/5 border border-white/10 rounded-2xl py-2.5 px-5 pl-11 focus:outline-none transition-all duration-300 text-sm">
-                <svg class="w-4 h-4 absolute left-4 top-3 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
-            </div>
-            
-            <a href="https://ngl.link/niomods1" target="_blank" class="sand-btn p-2.5 rounded-2xl flex items-center justify-center min-w-[44px]">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                </svg>
-            </a>
-        </div>
-    </nav>
-
-    <main id="main-view" class="max-w-7xl mx-auto px-6 pt-12 pb-32">
-        <section class="relative mb-16 animate-pop h-[400px] md:h-[500px] rounded-[2.5rem] border border-white/10 shadow-2xl group">
-            <div class="crown-overlay">
-                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M5 16L3 5L8.5 10L12 4L15.5 10L21 5L19 16H5Z" fill="#FFD700" stroke="#FFA500" stroke-width="1" stroke-linejoin="round"/>
-                    <circle cx="12" cy="4" r="1.5" fill="#FFF"/>
-                    <circle cx="3" cy="5" r="1.5" fill="#FFF"/>
-                    <circle cx="21" cy="5" r="1.5" fill="#FFF"/>
-                    <rect x="5" y="16" width="14" height="3" rx="1" fill="#FFA500"/>
-                </svg>
-            </div>
-
-            <div class="w-full h-full overflow-hidden rounded-[2.5rem]">
-                <div id="slider" class="slider-container">
-                    <div class="slide active">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-gUvNoMArsCAlkun4RFTAnyjtSOYrbOlj8k-tLZR0Ow&s=10" class="slide-img" alt="Movibox">
-                        <div class="slide-content">
-                            <span class="px-3 py-1 bg-purple-600 rounded-lg text-[10px] font-black uppercase tracking-widest mb-4 w-fit">NEW UPDATE</span>
-                            <h2 class="text-4xl md:text-6xl font-black mb-4 leading-[0.9] tracking-tighter uppercase">MOVIBOX <br><span class="text-purple-400">Stream Master</span></h2>
-                            <button onclick="handleViewClick(17)" class="w-fit bg-white text-black px-10 py-4 rounded-xl font-black text-sm tracking-widest hover:bg-purple-600 hover:text-white transition-all transform active:scale-95 uppercase">Get Mod</button>
-                        </div>
-                    </div>
-                    <div class="slide">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7hwKuPSGVsrkPnfUC9LIXjW8jGhHs9mUwnQcp3fNCrQ&s=10" class="slide-img" alt="Dramabox">
-                        <div class="slide-content">
-                            <span class="px-3 py-1 bg-red-600 rounded-lg text-[10px] font-black uppercase tracking-widest mb-4 w-fit">CINEMA ELITE</span>
-                            <h2 class="text-4xl md:text-6xl font-black mb-4 leading-[0.9] tracking-tighter uppercase">DRAMABOX <br><span class="text-red-400">Premium Content</span></h2>
-                            <button onclick="handleViewClick(16)" class="w-fit bg-white text-black px-10 py-4 rounded-xl font-black text-sm tracking-widest hover:bg-red-600 hover:text-white transition-all transform active:scale-95 uppercase">Get Mod</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="flex flex-col gap-6 mb-12">
-            <div class="flex justify-center sm:justify-start">
-                <button id="sortToggleBtn" onclick="toggleSortOrder()" class="sort-toggle latest-mode flex items-center gap-4 px-8 py-4 rounded-2xl min-w-[160px] group">
-                    <div class="flex flex-col items-center justify-center">
-                        <svg id="sortIcon" class="w-5 h-5 transition-all duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                        </svg>
-                    </div>
-                    <span id="sortText" class="font-black text-[13px] uppercase tracking-[0.2em]">Latest</span>
-                </button>
-            </div>
-
-            <div class="flex items-center gap-4 overflow-x-auto pb-4 no-scrollbar">
-                <button onclick="filterMods('All', this)" class="category-tab active bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">All</button>
-                <button onclick="filterMods('Tools', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Tools</button>
-                <button onclick="filterMods('War', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">War</button>
-                <button onclick="filterMods('Role Play', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Role Play</button>
-                <button onclick="filterMods('Car Drive', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Car Drive</button>
-                <button onclick="filterMods('Music', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Music</button>
-                <button onclick="filterMods('Edit', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Edit</button>
-                <button onclick="filterMods('Watch', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Watch</button>
-                <button onclick="filterMods('Ai', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Ai</button>
-            </div>
-        </div>
-
-        <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
-    </main>
-
-    <div id="store-view" class="hidden fixed inset-0 z-50 bg-[#020617] overflow-y-auto pt-24 pb-20">
-        <div id="store-content" class="max-w-4xl mx-auto px-6 opacity-0 transition-opacity duration-500">
-            <button onclick="goHome()" class="flex items-center gap-2 text-white/50 hover:text-white mb-10 group">
-                <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                <span class="font-bold text-xs tracking-widest uppercase">Back Home</span>
-            </button>
-
-            <div class="bg-white/[0.02] border border-white/5 rounded-[3rem] p-8 md:p-12 mb-8">
-                <div class="flex flex-col md:flex-row gap-10 items-start mb-12">
-                    <img id="store-app-icon" class="w-32 h-32 md:w-44 md:h-44 rounded-[2.5rem] shadow-2xl object-cover border border-white/10">
-                    <div class="flex-grow w-full text-left">
-                        <div class="flex items-center gap-3 mb-2">
-                            <h1 id="store-app-title" class="text-4xl md:text-6xl font-black tracking-tighter uppercase"></h1>
-                            <span class="apj-badge px-2 py-0.5 rounded text-[8px] font-black tracking-widest text-black">APJ</span>
-                        </div>
-                        <p id="store-app-dev" class="text-blue-500 font-bold tracking-widest text-[10px] uppercase mb-8"></p>
-                        <div class="flex flex-wrap gap-8 mb-10">
-                            <div><p id="store-app-size" class="text-xl font-black"></p><p class="text-[9px] opacity-40 font-bold uppercase tracking-widest">Size</p></div>
-                            <div class="hidden md:block w-px h-10 bg-white/10"></div>
-                            <div><p id="store-app-version" class="text-xl font-black"></p><p class="text-[9px] opacity-40 font-bold uppercase tracking-widest">Version</p></div>
-                        </div>
-                        <div class="flex flex-row gap-3 w-full">
-                            <button id="install-btn" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-2xl font-black text-xs tracking-widest uppercase shadow-xl transition-all">Download APK</button>
-                            <button onclick="toggleExplanation()" class="flex-1 bg-white/10 hover:bg-white/20 text-white py-4 rounded-2xl font-black text-xs tracking-widest uppercase transition-all">Info</button>
-                        </div>
-                    </div>
-                </div>
-                <div id="explanation-content" class="bg-white/[0.03] rounded-3xl border border-white/10 mb-12 overflow-hidden max-h-0 transition-all duration-500">
-                    <div class="p-8">
-                        <h4 class="text-blue-400 font-black text-[10px] uppercase tracking-widest mb-4">Technical Breakdown</h4>
-                        <div id="explanation-text" class="text-white/60 text-sm space-y-4"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="fr-selection-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-6 fr-modal-backdrop">
-        <div class="bg-[#0f172a] border border-white/10 w-full max-w-sm rounded-[3rem] p-8 md:p-10 text-center animate-pop shadow-2xl relative overflow-hidden">
-            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500"></div>
-            <h3 class="text-2xl font-black mb-1 uppercase tracking-tighter">Choose Edition</h3>
-            <p class="text-white/40 text-[9px] font-bold uppercase tracking-widest mb-8">FR LEGEND MOD SELECTION</p>
-            <div class="space-y-4">
-                <button onclick="execDownloadFR('classic')" class="w-full bg-white/5 hover:bg-white/10 border border-white/5 p-6 rounded-[2rem] transition-all group">
-                    <span class="block font-black text-sm uppercase tracking-widest mb-1 group-hover:text-blue-400">Classic Mod</span>
-                    <span class="block text-[8px] opacity-40 uppercase font-bold">Standard Modded Features</span>
-                </button>
-                <button onclick="execDownloadFR('modpack')" class="w-full bg-blue-600 hover:bg-blue-500 p-6 rounded-[2rem] shadow-xl transition-all group">
-                    <span class="block font-black text-sm uppercase tracking-widest mb-1">Modpack Ver</span>
-                    <span class="block text-[8px] text-white/70 uppercase font-bold tracking-widest">Enhanced Map & Performance</span>
-                </button>
-                <button onclick="closeFRModal()" class="pt-4 text-[9px] font-black text-white/20 hover:text-white uppercase tracking-[0.4em] transition-colors">Cancel</button>
-            </div>
-        </div>
-    </div>
 
     <script>
-        const database = [
-            { id: 34, title: "GTA 5 Mobile", cat: "Role Play", size: "221.32MB", ver: "5", dev: "Rockstar Games", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcjgQib3DzVw3tE4QHQIBnV_pDGVAhZWOHhvYL28FKHg&s=10", link: "https://safefileku.com/download/ePslVPei6sl3ucgk" },
-            { id: 33, title: "Minecraft", cat: "Role Play", size: "875.49MB", ver: "1.21.132.1", dev: "Mojang", img: "https://play-lh.googleusercontent.com/27O5tpaYE82W6m30rJ_MX3-UvshlDM6O8oXDxb6GseYW2T7P8UNT19727MGmz-0q3w", link: "https://safefileku.com/download/UHgUvUhy6so8G5bD" },
-            { id: 32, title: "Ngl-mod", cat: "Tools", size: "171.97MB", ver: "2.3.55", dev: "NGL Mod Studio", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQik2PmL9FW7SLGBzzymNtgO-cz2HGp_jTZ_xvk3jy65w&s=10", link: "https://safefileku.com/download/ow6CpU2I7Fzlw1NQ" },
-            { id: 31, title: "Truck Masters India", cat: "Car Drive", size: "518.54MB", ver: "2025.5.7", dev: "RedFox Games", img: "https://play-lh.googleusercontent.com/nmAKBLjInkBBVtyZW7ChitHDd4repJoAhcCnsTLXwhaTreJhIEU87aPlw7Q5qx1HjVFN=w240-h480-rw", link: "https://safefileku.com/download/BHKJVeQU0sN6tVC7" },
-            { id: 30, title: "Tekken 6", cat: "War", size: "36.62MB", ver: "6", dev: "Bandai Namco", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdd-c4rk3nzuu8F-KL2qbV5sPSzIoeWMN7-g7ZOD8hNgEKf8nz9267PlY&s=10", link: "https://safefileku.com/download/U7vaxlOh8I9Iz1c3" },
-            { id: 29, title: "Kick the Buddy: Forever", cat: "Role Play", size: "123.20MB", ver: "2.0.22", dev: "Playgendary Limited", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCCXjRbkyqzTrqIclJsaehWjwo4EOQLfuO9S4uN_yBtg&s=10", link: "https://safefileku.com/download/GP4Bz5y07LfVMeXl" },
-            { id: 28, title: "GFX Tool", cat: "Tools", size: "4.82MB", ver: "10.3.0", dev: "tsoml", img: "https://img.utdstc.com/icon/872/672/87267271e1a2e1c89feb9c759aa1622917d7fbc6f3d0029a4d5216dc535d5146:200", link: "https://safefileku.com/download/KUBAwSdATFYUYnDx" },
-            { id: 27, title: "Snap Master VPN", cat: "Tools", size: "18.5MB", ver: "8.0.5", dev: "Lemon Clove", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOdMwJHJbEMCDC8UZb_cAZOatrrEDpHXGuz2M-MyHyJ3-sZ012t4GXEv4e&s=1", link: "https://safefileku.com/download/KUBAwSdATFYUYnDx" },
-            { id: 26, title: "Indian Bikes Driving", cat: "Car Drive", size: "153.84MB", ver: "79", dev: "Rohit Gaming Studio", img: "https://img.utdstc.com/icon/d45/de4/d45de47f27a8471894c3465c1cd8516cc8aea333bf7a27b1291cb9ecca45172f:200", link: "https://safefileku.com/download/jafABpTi798aISEk" },
-            { id: 25, title: "Clean Master", cat: "Tools", size: "22.38MB", ver: "7.5.3", dev: "Cheetah Mobile", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2PmLZ5LDQzdt1phUaepNhTII_u3jkyZbOC_9sOfLXCQ&s=10", link: "https://safefileku.com/download/YT8mYxHUsb2o6oDM" },
-            { id: 24, title: "Turbo VPN", cat: "Tools", size: "43.25MB", ver: "4.2.9.3", dev: "Innovative Connecting", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4wzz1Krjdf8aRfg4nSSRIVJWKyWrtqD9eBgGD9GVrbLLMMcsR04GVZ4N0&s=10", link: "https://safefileku.com/download/SCp0BdeyBWCkFa5q" },
-            { id: 23, title: "PPSSPP Gold", cat: "Tools", size: "29.24MB", ver: "1.19.3", dev: "Henrik Rydgård", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKhCruDSIa522uJOa4vg353z2ZN32p4Lt8XTIn5ZUqENgeoAyJUKGj264&s=10", link: "https://safefileku.com/download/4qE6KG9KuZpQobNw" },
-            { id: 22, title: "War Machines", cat: "War", size: "240.34MB", ver: "8.62.0", dev: "Fun Games For Free", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0trXfzi33Uw2dCqhpRo7ZANSW5AzvBqaDju9wlvN_lB8ephyFm7Zm0ww1&s=10", link: "https://safefileku.com/download/bA78xXBordGO24xX" },
-            { id: 21, title: "Real Gangster", cat: "Role Play", size: "153.23MB", ver: "6.2.9", dev: "Naxeex Action", img: "https://play-lh.googleusercontent.com/bzNJRFhrv3JIaqXit-rhHzIv3SNdgbD-wUMnN32ngwpHXp2fCZYLA41QfSxK0h85zw", link: "https://safefileku.com/download/R2wIlxO6q0W86EIS" },
-            { id: 14, title: "Free Fire", cat: "War", size: "486.97MB", ver: "1.120.1", dev: "Garena", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSS7Dy6s4Z2nCHNQegvlZsu4aiNcx9KyM7fpNWZmvxJXg&s=10", link: "https://sfl.gl/2QQ9cK" },
-            { id: 11, title: "Tower War Mod APK", cat: "War", size: "143.85MB", ver: "1.26.2", dev: "SayGames Ltd", img: "https://play-lh.googleusercontent.com/7G_QBBufLp71rnqfwEGF9XnF33H5wx-mD9wxpKAJvVXxcc7YCgsT4yxpT7GF7sGprf8=w240-h480-rw", link: "https://sfl.gl/zar2" },
-            { id: 8, title: "Stickwar: Legacy", cat: "War", size: "126.93MB", ver: "2026.1.16", dev: "Max Games Studios", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7SCsabszG6mD7MJOvWMmKYLnZtZ-qkvSdd90ZMVofbw&s=10", link: "https://sfl.gl/4yT8m" },
-            { id: 13, title: "Red Dead Redemption", cat: "Role Play", size: "6.26GB", ver: "Netflix Edition", dev: "Rockstar Games", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdikWJgJBBn3wvU94f96KGjObiyLOsoEAJzg&s", link: "https://www.mediafire.com/file_premium/ec3x4avokkt6ik0/Red-Dead-Redemption-NETFLIX-v1.50.60293175-unlocked-apkvision.apks/file" },
-            { id: 12, title: "Genshin Impact", cat: "Role Play", size: "601.1MB", ver: "v1.18.1", dev: "miHoYo", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQH2cUxmAof5GRpcd_YsFEX-V-eTtRiEoGKltW7P-2lKw&s=10", link: "https://sfl.gl/ecjA2L4Z" },
-            { id: 9, title: "i-am-monkey-mod", cat: "Role Play", size: "485.26MB", ver: "1.1.2", dev: "Monkey Mod Studio", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0Ze4VrkF3BMcYD7rhuAdrDqp0Nuks9BNGFA&s", link: "https://sfl.gl/gwZus27" },
-            { id: 18, title: "Rally-one", cat: "Car Drive", size: "169.64MB", ver: "1.6.6", dev: "VO DIGITAL", img: "https://img.utdstc.com/icon/03e/8e4/03e8e4950ba8409d020cf4d695cc78a0bc83b6fdafca999c7f5c5a0b5de8b6b2:200", link: "https://safefileku.com/download/gZnFdM1ATl5n4Ezq" },
-            { id: 7, title: "Fr Legend Mod APK", cat: "Car Drive", size: "140.63MB", ver: "0.4.2", dev: "Fr Legend Mod", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZwM_jHCnOxwLEm27pIQ7NFBSRFxDW0GTBtrHMeoqWehLozYZoLo-1DR6y&s=10", link: "https://sfl.gl/iSqr" },
-            { id: 4, title: "Hill Climb Racing", cat: "Car Drive", size: "117MB", ver: "1.67.8", dev: "Fingersoft", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSagTaUIHMw9BZ24-ZPyviuGoP9JeJlhk2MXWv44flhZRZkEA-N3vk3xrE&s=10", link: "https://sfl.gl/WqUJK2" },
-            { id: 10, title: "Spotify", cat: "Music", size: "130.62MB", ver: "9.1.14.864", dev: "Spotify Mod", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdxA0EMLltuoBhKV_osRZJDN4CghdiUNNYjXWyIAPoTF4T7n3jxirudHc&s=10", link: "https://sfl.gl/4wjTg0" },
-            { id: 3, title: "CapCut", cat: "Edit", size: "299.8MB", ver: "16.4.0", dev: "ByteDance", img: "https://temanakun.com/wp-content/uploads/2024/11/Capcut-Pro.jpg", link: "https://sfl.gl/nGIXBHqG" },
-            { id: 2, title: "Alight Motion", cat: "Edit", size: "106.55MB", ver: "5.0.272", dev: "NIO-MODS", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyNwrzgtIyiGljHYMmKfJ_79llskOVp2msvR3xn1B7Z1WF4NXcqfK9KGg&s=10", link: "https://sfl.gl/BX6a9L" },
-            { id: 17, title: "Movibox", cat: "Watch", size: "63.35MB", ver: "3.0.10.1110.03", dev: "Movibox Global", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-gUvNoMArsCAlkun4RFTAnyjtSOYrbOlj8k-tLZR0Ow&s=10", link: "https://safefileku.com/download/A9l77s0yxmaXPY9u" },
-            { id: 16, title: "Dramabox", cat: "Watch", size: "62.84MB", ver: "v5.2.1", dev: "Dramabox Studio", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7hwKuPSGVsrkPnfUC9LIXjW8jGhHs9mUwnQcp3fNCrQ&s=10", link: "https://safefileku.com/download/XdqF4zckxczhfzFe" },
-            { id: 15, title: "Melolo", cat: "Watch", size: "104.77MB", ver: "v5.1.2", dev: "NIO-MODS", img: "https://down-id.img.susercontent.com/file/id-11134207-81ztc-meog44jgu9kz20", link: "https://sfl.gl/vfijmy" },
-            { id: 1, title: "Chat-GPT", cat: "Ai", size: "21.54MB", ver: "4.0", dev: "OpenAI", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMdM9MEQ0ExL1PmInT3U5I8v63YXBEdoIT0Q&s", link: "https://sfl.gl/JXsZ" }
-        ];
-
-        const descriptions = {
-            "Role Play": "Open-world adventure experience with all items unlocked. This edition features high-resolution textures, god-mode toggles, and infinite resources to build or explore without limits.",
-            "Tools": "Pro utility suite with premium features bypassed. Enhanced performance algorithms ensure maximum efficiency for your device while removing tracking and unnecessary telemetry.",
-            "War": "Battle-ready mod with enhanced aim stability, unlocked character skins, and infinite ammunition. Perfected for high-performance combat simulations and competitive ranking.",
-            "Car Drive": "Extreme physics engine modification with all supercars unlocked. Includes custom tuning kits, nitro boosts, and high-fidelity environment rendering for the ultimate racing feel.",
-            "Music": "High-fidelity audio experience with ad-blocking and unlimited skips. Download your favorite playlists in 320kbps and enjoy a seamless, uninterrupted interface.",
-            "Edit": "Professional creative studio with all transitions, fonts, and premium effects unlocked. Export in 4K resolution without watermarks and utilize advanced keyframe animations.",
-            "Watch": "Cinema-grade streaming experience. Access premium content catalogs without subscription limits. Enjoy 4K HDR playback and offline downloading for an ad-free viewing session.",
-            "Ai": "Unrestricted artificial intelligence access. Experience the full capabilities of advanced neural networks with increased response speed and pro-tier model availability."
+        // DATA GAMES (Samakan dengan yang kamu punya)
+        const categories = {
+            "ROLE-PLAY": [
+                { id: "MINECRAFT", name: "Minecraft Mod", desc: "Mod roleplay terbaik." }
+            ]
         };
 
-        let currentCategory = 'All';
-        let sortMode = 'latest';
-
-        // --- NEW FEATURES START ---
-        
-        function getSlug(text) {
-            return text.replace(/ /g, '-').toUpperCase();
-        }
-
-        function checkDeepLink() {
-            const path = window.location.pathname.toUpperCase();
-            if (path === '/' || path === '') {
-                goHome(false);
-                return;
-            }
-
-            const segments = path.split('/').filter(Boolean);
+        function render() {
+            const app = document.getElementById('app');
+            const path = window.location.pathname.split('/').filter(Boolean);
             
-            // Cek jika link Game: /CATEGORY/GAME
-            if (segments.length >= 2) {
-                const gameSlug = segments[1].replace(/-/g, ' ');
-                const item = database.find(d => d.title.toUpperCase() === gameSlug);
-                if (item) {
-                    handleViewClick(item.id, false);
-                    return;
+            // 1. CEK APAKAH HALAMAN TERSEDIA
+            let content = "";
+
+            if (path.length === 0) {
+                // BERANDA
+                content = `<h1 class="text-2xl font-bold mb-6 text-center border-b border-gray-700 pb-4">NIO MODS</h1>`;
+                Object.keys(categories).forEach(cat => {
+                    content += `<button onclick="navigateTo('/${cat}')" class="block w-full p-4 bg-blue-600 hover:bg-blue-700 mb-3 rounded-xl transition shadow-lg font-bold">${cat}</button>`;
+                });
+            } 
+            else if (path.length === 1) {
+                // HALAMAN KATEGORI
+                const catId = path[0].toUpperCase();
+                const games = categories[catId];
+                if (games) {
+                    content = `<button onclick="navigateTo('/')" class="mb-4 text-blue-400">← Beranda</button>
+                               <h1 class="text-2xl font-bold mb-4">${catId}</h1>`;
+                    content += games.map(g => `
+                        <div onclick="navigateTo('/${catId}/${g.id}')" class="p-4 bg-gray-800 hover:bg-gray-700 mb-2 rounded-lg cursor-pointer transition">
+                            <p class="font-bold">${g.name}</p>
+                        </div>
+                    `).join('');
+                } else {
+                    content = renderError(); // Kategori tidak ada
                 }
             }
-
-            // Cek jika link Kategori: /CATEGORY
-            if (segments.length === 1) {
-                const catName = segments[0].replace(/-/g, ' ');
-                const availableCats = ['TOOLS', 'WAR', 'ROLE PLAY', 'CAR DRIVE', 'MUSIC', 'EDIT', 'WATCH', 'AI'];
-                const matchedCat = availableCats.find(c => c === catName);
-                
-                if (matchedCat) {
-                    const btn = Array.from(document.querySelectorAll('.category-tab'))
-                                     .find(b => b.innerText.toUpperCase() === matchedCat);
-                    filterMods(matchedCat === 'ROLE PLAY' ? 'Role Play' : matchedCat.charAt(0) + matchedCat.slice(1).toLowerCase(), btn, false);
-                    return;
+            else if (path.length === 2) {
+                // HALAMAN DETAIL GAME
+                const [catId, gameId] = path;
+                const game = categories[catId.toUpperCase()]?.find(g => g.id === gameId.toUpperCase());
+                if (game) {
+                    content = `
+                        <button onclick="navigateTo('/${catId}')" class="mb-4 text-blue-400">← Kembali</button>
+                        <div class="bg-gray-800 p-6 rounded-2xl shadow-2xl fade-in">
+                            <h1 class="text-3xl font-extrabold text-blue-400">${game.name}</h1>
+                            <p class="mt-4 text-gray-300 leading-relaxed">${game.desc}</p>
+                            <button class="w-full mt-8 py-3 bg-green-600 hover:bg-green-700 rounded-lg font-bold">DOWNLOAD MOD</button>
+                        </div>
+                    `;
+                } else {
+                    content = renderError(); // Game tidak ada
                 }
-            }
-            
-            goHome(false);
-        }
-
-        function toggleSortOrder() {
-            const btn = document.getElementById('sortToggleBtn');
-            const text = document.getElementById('sortText');
-            const icon = document.getElementById('sortIcon');
-            if (sortMode === 'latest') {
-                sortMode = 'az';
-                text.innerText = 'A-Z';
-                btn.classList.remove('latest-mode');
-                icon.style.transform = 'rotate(180deg)';
             } else {
-                sortMode = 'latest';
-                text.innerText = 'Latest';
-                btn.classList.add('latest-mode');
-                icon.style.transform = 'rotate(0deg)';
+                content = renderError(); // URL terlalu panjang/ngawur
             }
-            renderGrid();
+
+            app.innerHTML = content;
         }
 
-        function filterMods(category, btn, push = true) {
-            document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
-            if(btn) btn.classList.add('active');
-            currentCategory = category;
-            
-            if(push) {
-                if(category === 'All') window.history.pushState({}, '', '/');
-                else window.history.pushState({}, '', '/' + getSlug(category));
-            }
-            
-            renderGrid();
-        }
-
-        function renderGrid() {
-            const query = document.getElementById('searchBox').value.toLowerCase();
-            let data = currentCategory === 'All' ? [...database] : database.filter(d => d.cat === currentCategory);
-            if (query) data = data.filter(d => d.title.toLowerCase().includes(query));
-            if (sortMode === 'latest') {
-                data.sort((a, b) => b.id - a.id);
-            } else {
-                data.sort((a, b) => a.title.localeCompare(b.title));
-            }
-            const grid = document.getElementById('grid');
-            grid.innerHTML = '';
-            data.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'mod-card animate-pop';
-                card.style.background = `url(${item.img})`;
-                card.onclick = () => handleViewClick(item.id);
-                card.innerHTML = `
-                    <div class="card-fade"></div>
-                    <div class="card-content text-left">
-                        <span class="text-[7px] font-black text-white bg-blue-600 px-2 py-1 rounded-md uppercase tracking-widest mb-3 inline-block">APJ VERIFIED</span>
-                        <h3 class="text-xl font-black mb-1 tracking-tight text-white uppercase truncate">${item.title}</h3>
-                        <p class="text-white/60 text-[9px] mb-4">${item.cat.toUpperCase()}</p>
-                        <button class="w-full py-3 rounded-xl bg-white text-black font-black text-[10px] tracking-widest uppercase shadow-lg hover:scale-[1.02] transition-transform">VIEW</button>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        function handleViewClick(id, push = true) {
-            const item = database.find(d => d.id === id);
-            document.getElementById('main-view').classList.add('hidden');
-            document.getElementById('store-view').classList.remove('hidden');
-            document.getElementById('store-app-title').innerText = item.title;
-            document.getElementById('store-app-dev').innerText = item.dev;
-            document.getElementById('store-app-icon').src = item.img;
-            document.getElementById('store-app-size').innerText = item.size;
-            document.getElementById('store-app-version').innerText = item.ver;
-
-            if(push) {
-                window.history.pushState({id: id}, '', '/' + getSlug(item.cat) + '/' + getSlug(item.title));
-            }
-
-            if (item.id === 7) {
-                document.getElementById('install-btn').onclick = () => {
-                    document.getElementById('fr-selection-modal').classList.remove('hidden');
-                };
-            } else {
-                document.getElementById('install-btn').onclick = () => window.open(item.link, '_blank');
-            }
-            
-            const desc = descriptions[item.cat] || "Aplikasi premium ini telah dioptimalkan untuk performa maksimal dengan semua fitur berbayar yang terbuka secara gratis.";
-            document.getElementById('explanation-text').innerHTML = `
-                <p>${desc}</p>
-                <div class="pt-2">
-                    <p class="opacity-80 font-bold uppercase tracking-tighter text-[10px] text-blue-400">Security Check: <span class="text-white">Clean</span></p>
-                    <p class="opacity-80 font-bold uppercase tracking-tighter text-[10px] text-blue-400">Mod Status: <span class="text-white">Active</span></p>
+        // FUNGSI TAMPILAN ERROR (HALAMAN TIDAK TERSEDIA)
+        function renderError() {
+            return `
+                <div class="flex-1 flex flex-col items-center justify-center text-center fade-in">
+                    <span class="text-8xl mb-4">😢</span>
+                    <h1 class="text-2xl font-bold text-gray-200">Halaman tidak tersedia</h1>
+                    <p class="text-gray-500 mt-2 mb-6">Mungkin linknya salah atau sudah dihapus.</p>
+                    <button onclick="navigateTo('/')" class="px-6 py-2 bg-gray-700 hover:bg-gray-600 rounded-full text-sm transition">
+                        Kembali ke Beranda
+                    </button>
                 </div>
             `;
-            document.getElementById('store-content').classList.remove('opacity-0');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function closeFRModal() { document.getElementById('fr-selection-modal').classList.add('hidden'); }
-        function execDownloadFR(type) {
-            if (type === 'classic') { window.open('https://sfl.gl/iSqr', '_blank'); } 
-            else { window.open('https://safefileku.com/download/OCjFRcNbtNrhVd7M', '_blank'); }
-            closeFRModal();
-        }
-        function toggleExplanation() {
-            const exp = document.getElementById('explanation-content');
-            exp.style.maxHeight = exp.style.maxHeight === '0px' || !exp.style.maxHeight ? '500px' : '0px';
-        }
-        function goHome(push = true) {
-            document.getElementById('store-view').classList.add('hidden');
-            document.getElementById('main-view').classList.remove('hidden');
-            document.getElementById('store-content').classList.add('opacity-0');
-            if(push) window.history.pushState({}, '', '/');
-            closeFRModal();
+        function navigateTo(url) {
+            history.pushState(null, null, url);
+            render();
         }
 
-        window.onpopstate = () => checkDeepLink();
-
-        document.getElementById('searchBox').addEventListener('input', renderGrid);
-        let currentSlide = 0;
-        setInterval(() => {
-            const s = document.getElementById('slider');
-            if(s) {
-                currentSlide = (currentSlide + 1) % 2;
-                s.style.transform = `translateX(-${currentSlide * 100}%)`;
-                document.querySelectorAll('.slide').forEach((sl, i) => sl.classList.toggle('active', i === currentSlide));
-            }
-        }, 5000);
-        
-        window.onload = () => {
-            renderGrid();
-            checkDeepLink();
-        };
+        window.onpopstate = render;
+        render();
     </script>
 </body>
 </html>
