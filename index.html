@@ -388,23 +388,22 @@
         }
 
         function checkDeepLink() {
-            // Mengambil path URL saat ini (contoh: /TOOLS/TURBO-VPN)
-            const path = window.location.pathname.toUpperCase();
+            // Mengambil seluruh URL path, buang query strings dan karakter slash di ujung
+            const path = window.location.pathname.toUpperCase().split('?')[0].replace(/\/$/, "");
             
-            // Jika di home, pastikan tampilan utama muncul
-            if (path === '/' || path === '') {
+            if (path === '' || path === '/') {
                 goHome(false);
                 return;
             }
 
+            // Pecah path menjadi bagian-bagian
             const segments = path.split('/').filter(Boolean);
             
-            // Logika baru untuk mendukung URL Full (Kategori + Nama)
+            // PRIORITAS 1: Cek URL Lengkap (Kategori + Judul) -> /TOOLS/TURBO-VPN
             if (segments.length >= 2) {
-                const catSlug = segments[0].replace(/-/g, ' ');
-                const gameSlug = segments[1].replace(/-/g, ' ');
+                const catSlug = segments[segments.length - 2].replace(/-/g, ' ');
+                const gameSlug = segments[segments.length - 1].replace(/-/g, ' ');
                 
-                // Cari item yang kategory dan judulnya cocok (case insensitive)
                 const item = database.find(d => 
                     d.title.toUpperCase() === gameSlug && 
                     d.cat.toUpperCase() === catSlug
@@ -416,23 +415,24 @@
                 }
             }
 
-            // Fallback untuk Kategori saja atau Nama saja
-            if (segments.length === 1) {
-                const slug = segments[0].replace(/-/g, ' ');
+            // PRIORITAS 2: Cek Segmen tunggal (Mungkin Kategori atau Nama Saja)
+            if (segments.length >= 1) {
+                const lastSlug = segments[segments.length - 1].replace(/-/g, ' ');
                 
-                // Cek apakah ini Kategori
+                // Cek apakah itu Kategori
                 const availableCats = ['TOOLS', 'WAR', 'ROLE PLAY', 'CAR DRIVE', 'MUSIC', 'EDIT', 'WATCH', 'AI'];
-                const matchedCat = availableCats.find(c => c === slug);
+                const matchedCat = availableCats.find(c => c === lastSlug);
                 
                 if (matchedCat) {
+                    const realName = matchedCat === 'ROLE PLAY' ? 'Role Play' : matchedCat.charAt(0) + matchedCat.slice(1).toLowerCase();
                     const btn = Array.from(document.querySelectorAll('.category-tab'))
                                      .find(b => b.innerText.toUpperCase() === matchedCat);
-                    filterMods(matchedCat === 'ROLE PLAY' ? 'Role Play' : matchedCat.charAt(0) + matchedCat.slice(1).toLowerCase(), btn, false);
+                    filterMods(realName, btn, false);
                     return;
                 }
                 
-                // Cek apakah ini Nama Aplikasi (Direct Slug)
-                const item = database.find(d => d.title.toUpperCase() === slug);
+                // Cek apakah itu Nama Aplikasi
+                const item = database.find(d => d.title.toUpperCase() === lastSlug);
                 if (item) {
                     handleViewClick(item.id, false);
                     return;
