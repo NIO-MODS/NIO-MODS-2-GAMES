@@ -104,18 +104,6 @@
             backdrop-filter: blur(10px);
         }
 
-        .sort-toggle:active { transform: scale(0.95); }
-
-        .sort-toggle.latest-mode {
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
-        }
-
-        .sort-toggle.latest-mode span {
-            color: var(--neon-blue);
-            text-shadow: 0 0 8px rgba(0, 210, 255, 0.5);
-        }
-
         .hidden { display: none; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         
@@ -193,11 +181,6 @@
         .sand-btn:hover {
             transform: scale(1.05) translateY(-2px);
             box-shadow: 0 8px 25px rgba(0, 210, 255, 0.5);
-        }
-
-        .fr-modal-backdrop {
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(10px);
         }
     </style>
 </head>
@@ -279,28 +262,28 @@
             </div>
 
             <div class="flex items-center gap-4 overflow-x-auto pb-4 no-scrollbar">
-                <button onclick="filterMods('All', this)" class="category-tab active bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">All</button>
-                <button onclick="filterMods('Ai', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Ai</button>
-                <button onclick="filterMods('Tools', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Tools</button>
-                <button onclick="filterMods('War', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">War</button>
-                <button onclick="filterMods('Role Play', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Role Play</button>
-                <button onclick="filterMods('Car Drive', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Car Drive</button>
-                <button onclick="filterMods('Music', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Music</button>
-                <button onclick="filterMods('Edit', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Edit</button>
-                <button onclick="filterMods('Watch', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Watch</button>
+                <button id="cat-all" onclick="filterMods('All', this)" class="category-tab active bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">All</button>
+                <button id="cat-ai" onclick="filterMods('Ai', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Ai</button>
+                <button id="cat-tools" onclick="filterMods('Tools', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Tools</button>
+                <button id="cat-war" onclick="filterMods('War', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">War</button>
+                <button id="cat-role-play" onclick="filterMods('Role Play', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Role Play</button>
+                <button id="cat-car-drive" onclick="filterMods('Car Drive', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Car Drive</button>
+                <button id="cat-music" onclick="filterMods('Music', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Music</button>
+                <button id="cat-edit" onclick="filterMods('Edit', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Edit</button>
+                <button id="cat-watch" onclick="filterMods('Watch', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Watch</button>
             </div>
         </div>
 
         <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
     </main>
 
+    <!-- Store View and Footer same as before -->
     <div id="store-view" class="hidden fixed inset-0 z-50 bg-[#020617] overflow-y-auto pt-24 pb-20">
         <div id="store-content" class="max-w-4xl mx-auto px-6 opacity-0 transition-opacity duration-500">
             <button onclick="goHome()" class="flex items-center gap-2 text-white/50 hover:text-white mb-10 group">
                 <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 <span class="font-bold text-xs tracking-widest uppercase">Back Home</span>
             </button>
-
             <div class="bg-white/[0.02] border border-white/5 rounded-[3rem] p-8 md:p-12 mb-8">
                 <div class="flex flex-col md:flex-row gap-10 items-start mb-12">
                     <img id="store-app-icon" class="w-32 h-32 md:w-44 md:h-44 rounded-[2.5rem] shadow-2xl object-cover border border-white/10">
@@ -312,7 +295,6 @@
                         <p id="store-app-dev" class="text-blue-500 font-bold tracking-widest text-[10px] uppercase mb-8"></p>
                         <div class="flex flex-wrap gap-8 mb-10">
                             <div><p id="store-app-size" class="text-xl font-black"></p><p class="text-[9px] opacity-40 font-bold uppercase tracking-widest">Size</p></div>
-                            <div class="hidden md:block w-px h-10 bg-white/10"></div>
                             <div><p id="store-app-version" class="text-xl font-black"></p><p class="text-[9px] opacity-40 font-bold uppercase tracking-widest">Version</p></div>
                         </div>
                         <div class="flex flex-row gap-3 w-full">
@@ -356,14 +338,14 @@
         ];
 
         const descriptions = {
-            "Ai": "Unrestricted artificial intelligence access. Experience the full capabilities of advanced neural networks with premium features unlocked.",
-            "Role Play": "Open-world adventure experience with all items unlocked. This edition features high-resolution textures and infinite resources.",
-            "Tools": "Pro utility suite with premium features bypassed. Enhanced performance algorithms ensure maximum efficiency.",
-            "War": "Battle-ready mod with enhanced stability and unlocked premium features.",
-            "Car Drive": "Extreme physics engine modification with all supercars unlocked and custom tuning kits.",
-            "Music": "High-fidelity audio experience with ad-blocking and unlimited skips.",
-            "Edit": "Professional creative studio dengan fitur premium unlocked. Edit video seperti pro.",
-            "Watch": "Cinema-grade streaming experience. Access premium content catalogs."
+            "Ai": "Unrestricted artificial intelligence access.",
+            "Role Play": "Open-world adventure experience.",
+            "Tools": "Pro utility suite.",
+            "War": "Battle-ready mod.",
+            "Car Drive": "Extreme physics engine.",
+            "Music": "High-fidelity audio experience.",
+            "Edit": "Professional creative studio.",
+            "Watch": "Cinema-grade streaming experience."
         };
 
         let currentCategory = 'All';
@@ -408,11 +390,9 @@
             const query = document.getElementById('searchBox').value.toLowerCase();
             let data = currentCategory === 'All' ? [...database] : database.filter(d => d.cat === currentCategory);
             if (query) data = data.filter(d => d.title.toLowerCase().includes(query));
-            if (sortMode === 'latest') {
-                data.sort((a, b) => b.id - a.id);
-            } else {
-                data.sort((a, b) => a.title.localeCompare(b.title));
-            }
+            if (sortMode === 'latest') data.sort((a, b) => b.id - a.id);
+            else data.sort((a, b) => a.title.localeCompare(b.title));
+            
             const grid = document.getElementById('grid');
             grid.innerHTML = '';
             data.forEach(item => {
@@ -422,11 +402,11 @@
                 card.onclick = () => handleViewClick(item.id);
                 card.innerHTML = `
                     <div class="card-fade"></div>
-                    <div class="card-content text-left">
+                    <div class="card-content">
                         <span class="text-[7px] font-black text-white bg-blue-600 px-2 py-1 rounded-md uppercase tracking-widest mb-3 inline-block">APJ VERIFIED</span>
-                        <h3 class="text-xl font-black mb-1 tracking-tight text-white uppercase truncate">${item.title}</h3>
+                        <h3 class="text-xl font-black mb-1 text-white uppercase truncate">${item.title}</h3>
                         <p class="text-white/60 text-[9px] mb-4">${item.cat.toUpperCase()}</p>
-                        <button class="w-full py-3 rounded-xl bg-white text-black font-black text-[10px] tracking-widest uppercase shadow-lg hover:scale-[1.02] transition-transform">VIEW</button>
+                        <button class="w-full py-3 rounded-xl bg-white text-black font-black text-[10px] tracking-widest uppercase shadow-lg">VIEW</button>
                     </div>
                 `;
                 grid.appendChild(card);
@@ -445,20 +425,9 @@
             document.getElementById('store-app-size').innerText = item.size;
             document.getElementById('store-app-version').innerText = item.ver;
 
-            if(push) {
-                window.history.pushState({id: id}, '', '/' + getSlug(item.cat) + '/' + getSlug(item.title));
-            }
-
+            if(push) window.history.pushState({id: id}, '', '/' + getSlug(item.cat) + '/' + getSlug(item.title));
             document.getElementById('install-btn').onclick = () => window.open(item.link, '_blank');
-            
-            const desc = descriptions[item.cat] || "Aplikasi premium ini telah dioptimalkan untuk performa maksimal dengan semua fitur berbayar yang terbuka secara gratis.";
-            document.getElementById('explanation-text').innerHTML = `
-                <p>${desc}</p>
-                <div class="pt-2">
-                    <p class="opacity-80 font-bold uppercase tracking-tighter text-[10px] text-blue-400">Security Check: <span class="text-white">Clean</span></p>
-                    <p class="opacity-80 font-bold uppercase tracking-tighter text-[10px] text-blue-400">Mod Status: <span class="text-white">Active</span></p>
-                </div>
-            `;
+            document.getElementById('explanation-text').innerHTML = `<p>${descriptions[item.cat] || "Premium Optimization."}</p>`;
             document.getElementById('store-content').classList.remove('opacity-0');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -475,19 +444,34 @@
             if(push) window.history.pushState({}, '', '/');
         }
 
+        // FUNGSI UPDATED: Menangani link kategori tunggal
         function handleDeepLink() {
             const path = window.location.pathname.toUpperCase();
-            if (path && path !== '/') {
-                const parts = path.split('/').filter(p => p !== "");
-                if (parts.length >= 2) {
-                    const categorySlug = parts[0];
-                    const titleSlug = parts[1];
-                    const item = database.find(d => getSlug(d.cat) === categorySlug && getSlug(d.title) === titleSlug);
-                    if (item) {
-                        handleViewClick(item.id, false);
-                        return;
-                    }
-                }
+            if (!path || path === '/') return;
+
+            const parts = path.split('/').filter(p => p !== "");
+            if (parts.length === 0) return;
+
+            const categorySlug = parts[0];
+
+            // Cek apakah bagian pertama adalah kategori yang valid
+            const validCategories = ["AI", "TOOLS", "WAR", "ROLE-PLAY", "CAR-DRIVE", "MUSIC", "EDIT", "WATCH"];
+            const realCategoryNames = {
+                "AI": "Ai", "TOOLS": "Tools", "WAR": "War", "ROLE-PLAY": "Role Play",
+                "CAR-DRIVE": "Car Drive", "MUSIC": "Music", "EDIT": "Edit", "WATCH": "Watch"
+            };
+
+            if (parts.length === 1 && validCategories.includes(categorySlug)) {
+                // Kasus: /AI atau /EDIT
+                const targetCat = realCategoryNames[categorySlug];
+                const btnId = 'cat-' + categorySlug.toLowerCase();
+                const btn = document.getElementById(btnId);
+                filterMods(targetCat, btn, false);
+            } else if (parts.length >= 2) {
+                // Kasus: /AI/GROK-AI
+                const titleSlug = parts[1];
+                const item = database.find(d => getSlug(d.cat) === categorySlug && getSlug(d.title) === titleSlug);
+                if (item) handleViewClick(item.id, false);
             }
         }
 
@@ -507,6 +491,11 @@
         window.onload = () => {
             renderGrid();
             handleDeepLink();
+        };
+
+        window.onpopstate = () => {
+            if (window.location.pathname === '/') goHome(false);
+            else handleDeepLink();
         };
     </script>
 </body>
