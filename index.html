@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -247,19 +248,19 @@
             <div class="w-full h-full overflow-hidden rounded-[2.5rem]">
                 <div id="slider" class="slider-container">
                     <div class="slide active">
+                        <img src="https://play-lh.googleusercontent.com/tUZNUbnNGw8I6uLg8Zy2ZWbmSFuT5kK0dYA8tdqNmldlozNS_jSjDw5j2nElRsoTzQ=w1024-h500-rw" class="slide-img" alt="Canva Pro">
+                        <div class="slide-content">
+                            <span class="px-3 py-1 bg-purple-600 rounded-lg text-[10px] font-black uppercase tracking-widest mb-4 w-fit">Featured Editor</span>
+                            <h2 class="text-4xl md:text-6xl font-black mb-4 leading-[0.9] tracking-tighter uppercase">CANVA PRO <br><span class="text-purple-400">Design Like a Pro</span></h2>
+                            <button onclick="handleViewClick(53)" class="w-fit bg-white text-black px-10 py-4 rounded-xl font-black text-sm tracking-widest hover:bg-purple-600 hover:text-white transition-all transform active:scale-95 uppercase">Get Mod</button>
+                        </div>
+                    </div>
+                    <div class="slide">
                         <img src="https://play-lh.googleusercontent.com/dQRKhi30KpzG3gww3TdVLzyIAVuOAWylnAcgnEUxqfpm2A8dEt2sgApVvtKAy-DO8aI=w1024-h500-rw" class="slide-img" alt="Grok-AI">
                         <div class="slide-content">
                             <span class="px-3 py-1 bg-blue-600 rounded-lg text-[10px] font-black uppercase tracking-widest mb-4 w-fit">AI REVOLUTION</span>
                             <h2 class="text-4xl md:text-6xl font-black mb-4 leading-[0.9] tracking-tighter uppercase">GROK-AI <br><span class="text-blue-400">Next Gen Intelligence</span></h2>
                             <button onclick="handleViewClick(49)" class="w-fit bg-white text-black px-10 py-4 rounded-xl font-black text-sm tracking-widest hover:bg-blue-600 hover:text-white transition-all transform active:scale-95 uppercase">Get Mod</button>
-                        </div>
-                    </div>
-                    <div class="slide">
-                        <img src="https://play-lh.googleusercontent.com/lI3MeWGtckeFE_PbVxe_cP8rjKpKXcraFt3HQmBifmbJS-bKCWd4WnlYPeNxhVhkAwg=w1024-h500-rw" class="slide-img" alt="Ask-AI">
-                        <div class="slide-content">
-                            <span class="px-3 py-1 bg-green-600 rounded-lg text-[10px] font-black uppercase tracking-widest mb-4 w-fit">SMART ASSISTANT</span>
-                            <h2 class="text-4xl md:text-6xl font-black mb-4 leading-[0.9] tracking-tighter uppercase">ASK-AI <br><span class="text-green-400">Ask Anything</span></h2>
-                            <button onclick="handleViewClick(50)" class="w-fit bg-white text-black px-10 py-4 rounded-xl font-black text-sm tracking-widest hover:bg-green-600 hover:text-white transition-all transform active:scale-95 uppercase">Get Mod</button>
                         </div>
                     </div>
                 </div>
@@ -310,7 +311,7 @@
                             <span class="apj-badge px-2 py-0.5 rounded text-[8px] font-black tracking-widest text-black">APJ</span>
                         </div>
                         <p id="store-app-dev" class="text-blue-500 font-bold tracking-widest text-[10px] uppercase mb-8"></p>
-                        <div class="flex flex-wrap gap-8 mb-10">
+                        <div class="flex wrap gap-8 mb-10">
                             <div><p id="store-app-size" class="text-xl font-black"></p><p class="text-[9px] opacity-40 font-bold uppercase tracking-widest">Size</p></div>
                             <div class="hidden md:block w-px h-10 bg-white/10"></div>
                             <div><p id="store-app-version" class="text-xl font-black"></p><p class="text-[9px] opacity-40 font-bold uppercase tracking-widest">Version</p></div>
@@ -333,6 +334,9 @@
 
     <script>
         const database = [
+            { id: 53, title: "Canva Pro", cat: "Edit", size: "35.13MB", ver: "2.267.0", dev: "Canva Studio", img: "https://play-lh.googleusercontent.com/tUZNUbnNGw8I6uLg8Zy2ZWbmSFuT5kK0dYA8tdqNmldlozNS_jSjDw5j2nElRsoTzQ=w480-h960-rw", link: "https://sfile.co/i2mtq3kDNRE" },
+            { id: 52, title: "DramaBox", cat: "Watch", size: "62.84MB", ver: "5.2.1", dev: "DramaBox Team", img: "https://play-lh.googleusercontent.com/dYAF42EhNGgGhC7nLHNSZkWs11W5Dv0mRWZBv6IgLDTh3l8eolsjeAVGg-HVHt9YWyA=w480-h960-rw", link: "https://safefileku.com/download/XdqF4zckxczhfzFe" },
+            { id: 51, title: "MoviBox+", cat: "Watch", size: "63.35MB", ver: "3.0.10.1110.03", dev: "MoviBox+ Studio", img: "https://play-lh.googleusercontent.com/PHlqD601dzsOKvCjq9UX02QVas0L6Olnzf3nxKJXO2GiSQU29F4JUdv7I9_aPcI80xCjVeVdMOqFDt0B81EP=w480-h960-rw", link: "https://safefileku.com/download/A9l77s0yxmaXPY9u" },
             { id: 50, title: "Ask-AI", cat: "Ai", size: "12.4MB", ver: "1.0.5", dev: "Codeway AI", img: "https://play-lh.googleusercontent.com/lI3MeWGtckeFE_PbVxe_cP8rjKpKXcraFt3HQmBifmbJS-bKCWd4WnlYPeNxhVhkAwg=w480-h960-rw", link: "https://safefileku.com/download/XJcCmXo42AH0KQuk" },
             { id: 49, title: "Grok-AI", cat: "Ai", size: "18.8MB", ver: "1.0.6", dev: "xAI Group", img: "https://play-lh.googleusercontent.com/dQRKhi30KpzG3gww3TdVLzyIAVuOAWylnAcgnEUxqfpm2A8dEt2sgApVvtKAy-DO8aI=w480-h960-rw", link: "https://safefileku.com/download/okg0RtLuTiCEuLsT" },
             { id: 48, title: "KWGT", cat: "Tools", size: "33.55MB", ver: "3.81b530915", dev: "Kustom Industries", img: "https://play-lh.googleusercontent.com/4I0r92jtWwSNfz6S9eZIS-D3Q4o2ODBw3NCvx50ctS11Tv4iY5UmhjqMJ2hePgjHYWY=w480-h960-rw", link: "https://safefileku.com/download/W0Jb0XeIZnKPNyGX" },
@@ -362,8 +366,8 @@
             "War": "Battle-ready mod with enhanced stability and unlocked premium features.",
             "Car Drive": "Extreme physics engine modification with all supercars unlocked and custom tuning kits.",
             "Music": "High-fidelity audio experience with ad-blocking and unlimited skips.",
-            "Edit": "Professional creative studio dengan fitur premium unlocked. Edit video seperti pro.",
-            "Watch": "Cinema-grade streaming experience. Access premium content catalogs."
+            "Edit": "Professional creative studio with premium features unlocked. Edit videos and design like a pro.",
+            "Watch": "Cinema-grade streaming experience. Access premium content catalogs for free."
         };
 
         let currentCategory = 'All';
@@ -451,7 +455,7 @@
 
             document.getElementById('install-btn').onclick = () => window.open(item.link, '_blank');
             
-            const desc = descriptions[item.cat] || "Aplikasi premium ini telah dioptimalkan untuk performa maksimal dengan semua fitur berbayar yang terbuka secara gratis.";
+            const desc = descriptions[item.cat] || "This premium application has been optimized for maximum performance with all paid features unlocked for free.";
             document.getElementById('explanation-text').innerHTML = `
                 <p>${desc}</p>
                 <div class="pt-2">
@@ -484,7 +488,6 @@
 
             const categorySlug = parts[0];
 
-            // List slug kategori valid
             const validCategories = ["AI", "TOOLS", "WAR", "ROLE-PLAY", "CAR-DRIVE", "MUSIC", "EDIT", "WATCH"];
             const realCategoryNames = {
                 "AI": "Ai", "TOOLS": "Tools", "WAR": "War", "ROLE-PLAY": "Role Play",
@@ -492,13 +495,11 @@
             };
 
             if (parts.length === 1 && validCategories.includes(categorySlug)) {
-                // Kasus Kategori Tunggal: /AI, /WATCH, dll
                 const targetCat = realCategoryNames[categorySlug];
                 const btnId = 'cat-' + categorySlug.toLowerCase();
                 const btn = document.getElementById(btnId);
                 filterMods(targetCat, btn, false);
             } else if (parts.length >= 2) {
-                // Kasus Detail Item: /AI/GROK-AI
                 const titleSlug = parts[1];
                 const item = database.find(d => getSlug(d.cat) === categorySlug && getSlug(d.title) === titleSlug);
                 if (item) handleViewClick(item.id, false);
