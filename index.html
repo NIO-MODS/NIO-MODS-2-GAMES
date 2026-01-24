@@ -1,13 +1,543 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="refresh" content="0; url=page.html">
-<script>
-location.replace("https://nio-mods.edgeone.dev");
-</script>
-<title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Bagian Ikon & Metadata (Agar gambar muncul saat ngetik URL) -->
+    <title>NIO-mod | download mod apk-teraman</title>
+    <link rel="icon" type="image/png" href="https://i.imgur.com/FBMwmjT.png">
+    <link rel="apple-touch-icon" href="https://i.imgur.com/FBMwmjT.png">
+    
+    <!-- Meta Open Graph untuk Preview Sosmed/URL -->
+    <meta property="og:title" content="NIO-mod | Organized Premium Mods">
+    <meta property="og:image" content="https://i.imgur.com/FBMwmjT.png">
+    <meta property="og:type" content="website">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Uncut+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-purple: #bc13fe;
+            --neon-blue: #00d2ff;
+            --deep-space: #020617;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            font-family: 'Uncut Sans', sans-serif;
+            background-color: var(--deep-space);
+            color: #fff;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .mesh-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 10% 10%, rgba(188, 19, 254, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(0, 210, 255, 0.1) 0%, transparent 40%);
+            z-index: -1;
+        }
+
+        .mod-card {
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 2.5rem;
+            height: 340px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 1.75rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: pointer;
+        }
+
+        .card-fade {
+            position: absolute;
+            inset: -1px; 
+            width: calc(100% + 2px);
+            height: calc(100% + 2px);
+            background: linear-gradient(to top, 
+                rgba(2, 6, 23, 1) 0%, 
+                rgba(2, 6, 23, 0.98) 25%, 
+                rgba(2, 6, 23, 0.6) 60%, 
+                rgba(2, 6, 23, 0.2) 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .mod-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--neon-blue);
+            box-shadow: 0 25px 50px -12px rgba(0, 210, 255, 0.3);
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .category-tab {
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .category-tab:hover {
+            transform: translateY(-2px);
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        .category-tab.active {
+            background: white !important;
+            color: black !important;
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.15);
+            transform: scale(1.05);
+        }
+
+        .sort-toggle {
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(10px);
+        }
+
+        .sort-toggle:active { transform: scale(0.95); }
+
+        .sort-toggle.latest-mode {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
+        }
+
+        .sort-toggle.latest-mode span {
+            color: var(--neon-blue);
+            text-shadow: 0 0 8px rgba(0, 210, 255, 0.5);
+        }
+
+        .hidden { display: none; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .slide {
+            min-width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide-img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.4);
+            transform: scale(1.1);
+            transition: transform 8s linear;
+        }
+
+        .slide.active .slide-img { transform: scale(1); }
+
+        .slide-content {
+            position: relative;
+            z-index: 10;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 10%;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease 0.3s;
+        }
+
+        .slide.active .slide-content { opacity: 1; transform: translateY(0); }
+
+        @keyframes pop { 0% { transform: scale(0.96); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .animate-pop { animation: pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+
+        .apj-badge {
+            background: linear-gradient(45deg, #00d2ff, #bc13fe);
+            animation: apj-pulse 2s infinite;
+        }
+        @keyframes apj-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 210, 255, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 210, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 210, 255, 0); }
+        }
+
+        .crown-overlay {
+            position: absolute;
+            top: -50px; 
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 50;
+            filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.5));
+            pointer-events: none;
+        }
+
+        .sand-btn {
+            background: linear-gradient(135deg, #00d2ff 0%, #0080ff 100%);
+            box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .sand-btn:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 210, 255, 0.5);
+        }
+
+        .fr-modal-backdrop {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+        }
+    </style>
 </head>
-<body></body>
+<body class="antialiased">
+    <div class="mesh-bg"></div>
+
+    <nav class="flex items-center justify-between px-6 md:px-12 py-5 sticky top-0 z-[60] backdrop-blur-2xl bg-black/40 border-b border-white/5">
+        <div class="flex items-center space-x-4 cursor-pointer" onclick="goHome()">
+            <div class="w-10 h-10 bg-gradient-to-br from-[#bc13fe] to-[#00d2ff] rounded-xl flex items-center justify-center shadow-xl">
+                <span class="font-black text-xl italic text-black">N</span>
+            </div>
+            <div class="flex flex-col text-left">
+                <span class="text-xl font-black tracking-tighter uppercase hidden sm:block leading-none">NIO<span class="text-blue-500">-</span>mod</span>
+                <span class="text-[8px] font-black tracking-[0.3em] text-blue-400 mt-1 hidden sm:block uppercase">Verified by APJ</span>
+            </div>
+        </div>
+
+        <div class="relative group max-w-md w-full mx-4 flex items-center gap-4">
+            <div class="relative w-full">
+                <input type="text" id="searchBox" placeholder="Search mods..." 
+                    class="w-full bg-white/5 border border-white/10 rounded-2xl py-2.5 px-5 pl-11 focus:outline-none transition-all duration-300 text-sm">
+                <svg class="w-4 h-4 absolute left-4 top-3 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+            </div>
+            
+            <a href="https://ngl.link/niomods1" target="_blank" class="sand-btn p-2.5 rounded-2xl flex items-center justify-center min-w-[44px]">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+            </a>
+        </div>
+    </nav>
+
+    <main id="main-view" class="max-w-7xl mx-auto px-6 pt-12 pb-32">
+        <section class="relative mb-16 animate-pop h-[400px] md:h-[500px] rounded-[2.5rem] border border-white/10 shadow-2xl group">
+            <div class="crown-overlay">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 16L3 5L8.5 10L12 4L15.5 10L21 5L19 16H5Z" fill="#FFD700" stroke="#FFA500" stroke-width="1" stroke-linejoin="round"/>
+                    <circle cx="12" cy="4" r="1.5" fill="#FFF"/>
+                    <circle cx="3" cy="5" r="1.5" fill="#FFF"/>
+                    <circle cx="21" cy="5" r="1.5" fill="#FFF"/>
+                    <rect x="5" y="16" width="14" height="3" rx="1" fill="#FFA500"/>
+                </svg>
+            </div>
+
+            <div class="w-full h-full overflow-hidden rounded-[2.5rem]">
+                <div id="slider" class="slider-container">
+                    <div class="slide active">
+                        <img src="https://play-lh.googleusercontent.com/tUZNUbnNGw8I6uLg8Zy2ZWbmSFuT5kK0dYA8tdqNmldlozNS_jSjDw5j2nElRsoTzQ=w1024-h500-rw" class="slide-img" alt="Canva Pro">
+                        <div class="slide-content">
+                            <span class="px-3 py-1 bg-purple-600 rounded-lg text-[10px] font-black uppercase tracking-widest mb-4 w-fit">Featured Editor</span>
+                            <h2 class="text-4xl md:text-6xl font-black mb-4 leading-[0.9] tracking-tighter uppercase">CANVA PRO <br><span class="text-purple-400">Design Like a Pro</span></h2>
+                            <button onclick="handleViewClick(53)" class="w-fit bg-white text-black px-10 py-4 rounded-xl font-black text-sm tracking-widest hover:bg-purple-600 hover:text-white transition-all transform active:scale-95 uppercase">Get Mod</button>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="https://play-lh.googleusercontent.com/dQRKhi30KpzG3gww3TdVLzyIAVuOAWylnAcgnEUxqfpm2A8dEt2sgApVvtKAy-DO8aI=w1024-h500-rw" class="slide-img" alt="Grok-AI">
+                        <div class="slide-content">
+                            <span class="px-3 py-1 bg-blue-600 rounded-lg text-[10px] font-black uppercase tracking-widest mb-4 w-fit">AI REVOLUTION</span>
+                            <h2 class="text-4xl md:text-6xl font-black mb-4 leading-[0.9] tracking-tighter uppercase">GROK-AI <br><span class="text-blue-400">Next Gen Intelligence</span></h2>
+                            <button onclick="handleViewClick(49)" class="w-fit bg-white text-black px-10 py-4 rounded-xl font-black text-sm tracking-widest hover:bg-blue-600 hover:text-white transition-all transform active:scale-95 uppercase">Get Mod</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="flex flex-col gap-6 mb-12">
+            <div class="flex justify-center sm:justify-start">
+                <button id="sortToggleBtn" onclick="toggleSortOrder()" class="sort-toggle latest-mode flex items-center gap-4 px-8 py-4 rounded-2xl min-w-[160px] group">
+                    <div class="flex flex-col items-center justify-center">
+                        <svg id="sortIcon" class="w-5 h-5 transition-all duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                    </div>
+                    <span id="sortText" class="font-black text-[13px] uppercase tracking-[0.2em]">Latest</span>
+                </button>
+            </div>
+
+            <div class="flex items-center gap-4 overflow-x-auto pb-4 no-scrollbar">
+                <button id="cat-all" onclick="filterMods('All', this)" class="category-tab active bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">All</button>
+                <button id="cat-ai" onclick="filterMods('Ai', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Ai</button>
+                <button id="cat-tools" onclick="filterMods('Tools', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Tools</button>
+                <button id="cat-war" onclick="filterMods('War', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">War</button>
+                <button id="cat-role-play" onclick="filterMods('Role Play', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Role Play</button>
+                <button id="cat-car-drive" onclick="filterMods('Car Drive', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Car Drive</button>
+                <button id="cat-music" onclick="filterMods('Music', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Music</button>
+                <button id="cat-edit" onclick="filterMods('Edit', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Edit</button>
+                <button id="cat-watch" onclick="filterMods('Watch', this)" class="category-tab bg-white/5 px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest whitespace-nowrap">Watch</button>
+            </div>
+        </div>
+
+        <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+    </main>
+
+    <div id="store-view" class="hidden fixed inset-0 z-50 bg-[#020617] overflow-y-auto pt-24 pb-20">
+        <div id="store-content" class="max-w-4xl mx-auto px-6 opacity-0 transition-opacity duration-500">
+            <button onclick="goHome()" class="flex items-center gap-2 text-white/50 hover:text-white mb-10 group">
+                <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="font-bold text-xs tracking-widest uppercase">Back Home</span>
+            </button>
+
+            <div class="bg-white/[0.02] border border-white/5 rounded-[3rem] p-8 md:p-12 mb-8">
+                <div class="flex flex-col md:flex-row gap-10 items-start mb-12">
+                    <img id="store-app-icon" class="w-32 h-32 md:w-44 md:h-44 rounded-[2.5rem] shadow-2xl object-cover border border-white/10">
+                    <div class="flex-grow w-full text-left">
+                        <div class="flex items-center gap-3 mb-2">
+                            <h1 id="store-app-title" class="text-4xl md:text-6xl font-black tracking-tighter uppercase"></h1>
+                            <span class="apj-badge px-2 py-0.5 rounded text-[8px] font-black tracking-widest text-black">APJ</span>
+                        </div>
+                        <p id="store-app-dev" class="text-blue-500 font-bold tracking-widest text-[10px] uppercase mb-8"></p>
+                        <div class="flex wrap gap-8 mb-10">
+                            <div><p id="store-app-size" class="text-xl font-black"></p><p class="text-[9px] opacity-40 font-bold uppercase tracking-widest">Size</p></div>
+                            <div class="hidden md:block w-px h-10 bg-white/10"></div>
+                            <div><p id="store-app-version" class="text-xl font-black"></p><p class="text-[9px] opacity-40 font-bold uppercase tracking-widest">Version</p></div>
+                        </div>
+                        <div class="flex flex-row gap-3 w-full">
+                            <button id="install-btn" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-2xl font-black text-xs tracking-widest uppercase shadow-xl transition-all">Download APK</button>
+                            <button onclick="toggleExplanation()" class="flex-1 bg-white/10 hover:bg-white/20 text-white py-4 rounded-2xl font-black text-xs tracking-widest uppercase transition-all">Info</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="explanation-content" class="bg-white/[0.03] rounded-3xl border border-white/10 mb-12 overflow-hidden max-h-0 transition-all duration-500">
+                    <div class="p-8">
+                        <h4 class="text-blue-400 font-black text-[10px] uppercase tracking-widest mb-4">Technical Breakdown</h4>
+                        <div id="explanation-text" class="text-white/60 text-sm space-y-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const database = [
+            { id: 53, title: "Canva Pro", cat: "Edit", size: "35.13MB", ver: "2.267.0", dev: "Canva Studio", img: "https://play-lh.googleusercontent.com/tUZNUbnNGw8I6uLg8Zy2ZWbmSFuT5kK0dYA8tdqNmldlozNS_jSjDw5j2nElRsoTzQ=w480-h960-rw", link: "https://sfile.co/i2mtq3kDNRE" },
+            { id: 52, title: "DramaBox", cat: "Watch", size: "62.84MB", ver: "5.2.1", dev: "DramaBox Team", img: "https://play-lh.googleusercontent.com/dYAF42EhNGgGhC7nLHNSZkWs11W5Dv0mRWZBv6IgLDTh3l8eolsjeAVGg-HVHt9YWyA=w480-h960-rw", link: "https://safefileku.com/download/XdqF4zckxczhfzFe" },
+            { id: 51, title: "MoviBox+", cat: "Watch", size: "63.35MB", ver: "3.0.10.1110.03", dev: "MoviBox+ Studio", img: "https://play-lh.googleusercontent.com/PHlqD601dzsOKvCjq9UX02QVas0L6Olnzf3nxKJXO2GiSQU29F4JUdv7I9_aPcI80xCjVeVdMOqFDt0B81EP=w480-h960-rw", link: "https://safefileku.com/download/A9l77s0yxmaXPY9u" },
+            { id: 50, title: "Ask-AI", cat: "Ai", size: "12.4MB", ver: "1.0.5", dev: "Codeway AI", img: "https://play-lh.googleusercontent.com/lI3MeWGtckeFE_PbVxe_cP8rjKpKXcraFt3HQmBifmbJS-bKCWd4WnlYPeNxhVhkAwg=w480-h960-rw", link: "https://safefileku.com/download/XJcCmXo42AH0KQuk" },
+            { id: 49, title: "Grok-AI", cat: "Ai", size: "18.8MB", ver: "1.0.6", dev: "xAI Group", img: "https://play-lh.googleusercontent.com/dQRKhi30KpzG3gww3TdVLzyIAVuOAWylnAcgnEUxqfpm2A8dEt2sgApVvtKAy-DO8aI=w480-h960-rw", link: "https://safefileku.com/download/okg0RtLuTiCEuLsT" },
+            { id: 48, title: "KWGT", cat: "Tools", size: "33.55MB", ver: "3.81b530915", dev: "Kustom Industries", img: "https://play-lh.googleusercontent.com/4I0r92jtWwSNfz6S9eZIS-D3Q4o2ODBw3NCvx50ctS11Tv4iY5UmhjqMJ2hePgjHYWY=w480-h960-rw", link: "https://safefileku.com/download/W0Jb0XeIZnKPNyGX" },
+            { id: 47, title: "Wink-Video-Retouching-Tool", cat: "Edit", size: "164.64MB", ver: "1.8.8.0", dev: "Meitu (China) Limited", img: "https://play-lh.googleusercontent.com/cshtf7MBtmCo5hOjigtUOLgpCcx-ZkQ_eisfmSvK0QZBKSG5bp4MEIH9iqdGYWnUK0B1bEc6iQ10p7WVZYVW7A=w480-h960-rw", link: "https://safefileku.com/download/k2qoRGCDu1dku7Ar" },
+            { id: 46, title: "GearUP Booster", cat: "Tools", size: "42.47MB", ver: "3.36.0.0120", dev: "GearUP Lab", img: "https://play-lh.googleusercontent.com/SnojGEhGpKn8IR1llHmRysc7QDpef10h41WBgavh_hDZsxpxwwKWJdzNMcoY85yZPJg=w480-h960-rw", link: "https://sfile.co/FJSj7qCPkWl" },
+            { id: 45, title: "Spotify", cat: "Music", size: "79.38MB", ver: "9.1.12.226", dev: "Spotify AB", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKLxpjtgpqngI7ftJ-h5mA1cYHYdZYyqowxNTXNcASnQ&s=10", link: "https://safefileku.com/download/iUNfUbcu53Xv5duR" },
+            { id: 44, title: "Fr legend", cat: "Car Drive", size: "122.11MB", ver: "0.4.3", dev: "Twin Turbo Games", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAaMwA6Pg3Xp5s4gvgArvpJMX-YcGFtZbUSA&s", link: "https://safefileku.com/download/OCjFRcNbtNrhVd7M" },
+            { id: 43, title: "Truck Masters India", cat: "Car Drive", size: "518.54MB", ver: "2025.1.2", dev: "RedFox Games", img: "https://play-lh.googleusercontent.com/nmAKBLjInkBBVtyZW7ChitHDd4repJoAhcCnsTLXwhaTreJhIEU87aPlw7Q5qx1HjVFN=w240-h480-rw", link: "https://safefileku.com/download/BHKJVeQU0sN6tVC7" },
+            { id: 42, title: "Gta5 RTX Mobile", cat: "Role Play", size: "221.32MB", ver: "5", dev: "Rockstar Games", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcjgQib3DzVw3tE4QHQIBnV_pDGVAhZWOHhvYL28FKHg&s=10", link: "https://safefileku.com/download/ePslVPei6sl3ucgk" },
+            { id: 41, title: "Minecraft", cat: "Role Play", size: "875.49MB", ver: "1.21.132.1", dev: "Mojang", img: "https://play-lh.googleusercontent.com/27O5tpaYE82W6m30rJ_MX3-UvshlDM6O8oXDxb6GseYW2T7P8UNT19727MGmz-0q3w=w480-h960-rw", link: "https://safefileku.com/download/UHgUvUhy6so8G5bD" },
+            { id: 40, title: "NGL", cat: "Tools", size: "171.97MB", ver: "2.3.55", dev: "NGL App", img: "https://play-lh.googleusercontent.com/ZcYo7MXo6XuUzjbTPOE0Dz6p25QqB6mmkpYn0WNB8odFlVkpHrpozYENhUbFpcrSrGw=w480-h960-rw", link: "https://safefileku.com/download/ow6CpU2I7Fzlw1NQ" },
+            { id: 39, title: "Takken 6", cat: "War", size: "36.62MB", ver: "6", dev: "Bandai Namco", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBRfaD6vSweK0MRkiXniZp0_RT8T2Xg28Yhg&s", link: "https://safefileku.com/download/U7vaxlOh8I9Iz1c3" },
+            { id: 38, title: "Kick Buddy Forever", cat: "Role Play", size: "123.20MB", ver: "2.0.22", dev: "Playgendary", img: "https://play-lh.googleusercontent.com/rwISNnxSxk0q0NgXD0JjzAH4GbGOYQhJ3wtkkYI6CaoH7tLyZhFHFeAlM_F63McAAP0=w480-h960-rw", link: "https://safefileku.com/download/GP4Bz5y07LfVMeXl" },
+            { id: 37, title: "Snap Master VPN", cat: "Tools", size: "25.67MB", ver: "8.0.5", dev: "Lemon Clove", img: "https://play-lh.googleusercontent.com/6y4yepIPj5ruxI9zNOm5Xep7W7mdJOpfO2XeXZSOWKieFx01iCizvQDj0CtDFdxgqDY=w480-h960-rw", link: "https://safefileku.com/download/LDLj3nQqLZmOPxmU" },
+            { id: 36, title: "GFX Tool", cat: "Tools", size: "4.86MB", ver: "10.3.0", dev: "tsoml", img: "https://play-lh.googleusercontent.com/B1d_EecOAo2QEZFMKsCSo4U-M0ukZcwYF7Q6-60UDSGL4RTYKePbg5f8GrojXEi24Tvm=w480-h960-rw", link: "https://safefileku.com/download/KUBAwSdATFYUYnDx" },
+            { id: 35, title: "Indian Bikes Driving 3D", cat: "Car Drive", size: "153.84MB", ver: "79", dev: "Rohit Gaming Studio", img: "https://play-lh.googleusercontent.com/HToouNPMRBSTbHD1swPV3nNx2BCPkquQnJHYFTEcjcmt5MbEEEBJrpeWDh7FZ8YssXw=w480-h960-rw", link: "https://safefileku.com/download/jafABpTi798aISEk" },
+            { id: 34, title: "Clean Master VIP", cat: "Tools", size: "22.38MB", ver: "7.5.3", dev: "Cheetah Mobile", img: "https://play-lh.googleusercontent.com/7o_1JeLs2pY9jas97ECh2TbmAnBldY2AjJwkDyH0CC2FgnypBAVvXf2Jf_tL4j9iBA=w480-h960-rw", link: "https://safefileku.com/download/YT8mYxHUsb2o6oDM" },
+            { id: 33, title: "War Machines", cat: "War", size: "240.34MB", ver: "8.62.0", dev: "Fun Games For Free", img: "https://play-lh.googleusercontent.com/4raH0eEBz-bDwfeVvqFlf88YfKkF59Gktu8BCeDQnVZ4l21zW67C6Da6Anl0SkDFRHQ=w480-h960-rw", link: "https://safefileku.com/download/bA78xXBordGO24xX" },
+            { id: 32, title: "PPSSPP Gold", cat: "Tools", size: "29.24MB", ver: "10.3.0", dev: "Henrik Rydgård", img: "https://play-lh.googleusercontent.com/10fZZfOPjwESHD3wFAZx65m6uwDxMqj2yokiSlOwJzrqxokol9Qc1hwMQnZOWTCtgB4=w480-h960-rw", link: "https://safefileku.com/download/4qE6KG9KuZpQobNw" },
+            { id: 31, title: "Turbo VPN", cat: "Tools", size: "43.25MB", ver: "4.2.9.3", dev: "Innovative Connecting", img: "https://play-lh.googleusercontent.com/lyktmo5HvZkprNjrNOYC0Cul_8il704kPhl8rSUV4AXQ-jLpm_yb3wYcJ6QACLKgLV5I=w480-h960-rw", link: "https://safefileku.com/download/SCp0BdeyBWCkFa5q" }
+        ];
+
+        const descriptions = {
+            "Ai": "Unrestricted artificial intelligence access. Experience the full capabilities of advanced neural networks with premium features unlocked.",
+            "Role Play": "Open-world adventure experience with all items unlocked. This edition features high-resolution textures and infinite resources.",
+            "Tools": "Pro utility suite with premium features bypassed. Enhanced performance algorithms ensure maximum efficiency.",
+            "War": "Battle-ready mod with enhanced stability and unlocked premium features.",
+            "Car Drive": "Extreme physics engine modification with all supercars unlocked and custom tuning kits.",
+            "Music": "High-fidelity audio experience with ad-blocking and unlimited skips.",
+            "Edit": "Professional creative studio with premium features unlocked. Edit videos and design like a pro.",
+            "Watch": "Cinema-grade streaming experience. Access premium content catalogs for free."
+        };
+
+        let currentCategory = 'All';
+        let sortMode = 'latest';
+
+        function getSlug(text) {
+            return text.toString().replace(/ /g, '-').toUpperCase();
+        }
+
+        function toggleSortOrder() {
+            const btn = document.getElementById('sortToggleBtn');
+            const text = document.getElementById('sortText');
+            const icon = document.getElementById('sortIcon');
+            if (sortMode === 'latest') {
+                sortMode = 'az';
+                text.innerText = 'A-Z';
+                btn.classList.remove('latest-mode');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                sortMode = 'latest';
+                text.innerText = 'Latest';
+                btn.classList.add('latest-mode');
+                icon.style.transform = 'rotate(0deg)';
+            }
+            renderGrid();
+        }
+
+        function filterMods(category, btn, push = true) {
+            document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+            if(btn) btn.classList.add('active');
+            currentCategory = category;
+            
+            if(push) {
+                if(category === 'All') window.history.pushState({}, '', '/');
+                else window.history.pushState({}, '', '/' + getSlug(category));
+            }
+            
+            renderGrid();
+        }
+
+        function renderGrid() {
+            const query = document.getElementById('searchBox').value.toLowerCase();
+            let data = currentCategory === 'All' ? [...database] : database.filter(d => d.cat === currentCategory);
+            if (query) data = data.filter(d => d.title.toLowerCase().includes(query));
+            if (sortMode === 'latest') {
+                data.sort((a, b) => b.id - a.id);
+            } else {
+                data.sort((a, b) => a.title.localeCompare(b.title));
+            }
+            const grid = document.getElementById('grid');
+            grid.innerHTML = '';
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'mod-card animate-pop';
+                card.style.background = `url(${item.img})`;
+                card.onclick = () => handleViewClick(item.id);
+                card.innerHTML = `
+                    <div class="card-fade"></div>
+                    <div class="card-content text-left">
+                        <span class="text-[7px] font-black text-white bg-blue-600 px-2 py-1 rounded-md uppercase tracking-widest mb-3 inline-block">APJ VERIFIED</span>
+                        <h3 class="text-xl font-black mb-1 tracking-tight text-white uppercase truncate">${item.title}</h3>
+                        <p class="text-white/60 text-[9px] mb-4">${item.cat.toUpperCase()}</p>
+                        <button class="w-full py-3 rounded-xl bg-white text-black font-black text-[10px] tracking-widest uppercase shadow-lg hover:scale-[1.02] transition-transform">VIEW</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function handleViewClick(id, push = true) {
+            const item = database.find(d => d.id === id);
+            if(!item) return;
+
+            document.getElementById('main-view').classList.add('hidden');
+            document.getElementById('store-view').classList.remove('hidden');
+            document.getElementById('store-app-title').innerText = item.title;
+            document.getElementById('store-app-dev').innerText = item.dev;
+            document.getElementById('store-app-icon').src = item.img;
+            document.getElementById('store-app-size').innerText = item.size;
+            document.getElementById('store-app-version').innerText = item.ver;
+
+            if(push) {
+                window.history.pushState({id: id}, '', '/' + getSlug(item.cat) + '/' + getSlug(item.title));
+            }
+
+            document.getElementById('install-btn').onclick = () => window.open(item.link, '_blank');
+            
+            const desc = descriptions[item.cat] || "This premium application has been optimized for maximum performance with all paid features unlocked for free.";
+            document.getElementById('explanation-text').innerHTML = `
+                <p>${desc}</p>
+                <div class="pt-2">
+                    <p class="opacity-80 font-bold uppercase tracking-tighter text-[10px] text-blue-400">Security Check: <span class="text-white">Clean</span></p>
+                    <p class="opacity-80 font-bold uppercase tracking-tighter text-[10px] text-blue-400">Mod Status: <span class="text-white">Active</span></p>
+                </div>
+            `;
+            document.getElementById('store-content').classList.remove('opacity-0');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleExplanation() {
+            const exp = document.getElementById('explanation-content');
+            exp.style.maxHeight = exp.style.maxHeight === '0px' || !exp.style.maxHeight ? '500px' : '0px';
+        }
+
+        function goHome(push = true) {
+            document.getElementById('store-view').classList.add('hidden');
+            document.getElementById('main-view').classList.remove('hidden');
+            document.getElementById('store-content').classList.add('opacity-0');
+            if(push) window.history.pushState({}, '', '/');
+        }
+
+        function handleDeepLink() {
+            const path = window.location.pathname.toUpperCase();
+            if (!path || path === '/') return;
+
+            const parts = path.split('/').filter(p => p !== "");
+            if (parts.length === 0) return;
+
+            const categorySlug = parts[0];
+
+            const validCategories = ["AI", "TOOLS", "WAR", "ROLE-PLAY", "CAR-DRIVE", "MUSIC", "EDIT", "WATCH"];
+            const realCategoryNames = {
+                "AI": "Ai", "TOOLS": "Tools", "WAR": "War", "ROLE-PLAY": "Role Play",
+                "CAR-DRIVE": "Car Drive", "MUSIC": "Music", "EDIT": "Edit", "WATCH": "Watch"
+            };
+
+            if (parts.length === 1 && validCategories.includes(categorySlug)) {
+                const targetCat = realCategoryNames[categorySlug];
+                const btnId = 'cat-' + categorySlug.toLowerCase();
+                const btn = document.getElementById(btnId);
+                filterMods(targetCat, btn, false);
+            } else if (parts.length >= 2) {
+                const titleSlug = parts[1];
+                const item = database.find(d => getSlug(d.cat) === categorySlug && getSlug(d.title) === titleSlug);
+                if (item) handleViewClick(item.id, false);
+            }
+        }
+
+        document.getElementById('searchBox').addEventListener('input', renderGrid);
+        
+        let currentSlide = 0;
+        setInterval(() => {
+            const s = document.getElementById('slider');
+            const slidesCount = document.querySelectorAll('.slide').length;
+            if(s) {
+                currentSlide = (currentSlide + 1) % slidesCount;
+                s.style.transform = `translateX(-${currentSlide * 100}%)`;
+                document.querySelectorAll('.slide').forEach((sl, i) => sl.classList.toggle('active', i === currentSlide));
+            }
+        }, 5000);
+        
+        window.onload = () => {
+            renderGrid();
+            handleDeepLink();
+        };
+
+        window.onpopstate = () => {
+            if (window.location.pathname === '/') goHome(false);
+            else handleDeepLink();
+        };
+    </script>
+</body>
 </html>
+
